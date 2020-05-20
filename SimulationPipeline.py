@@ -40,7 +40,7 @@ if ParamsDict["BOLD"] == False:
 ParamsDict["RandState"] = 118
 
 # Set Simulation Length:
-ParamsDict["Simul_length"] = 1.2e5
+ParamsDict["Simul_length"] = 1.2e6
 
 # Set Linear Coupling Constant:
 ParamsDict["G"] = 0.096
