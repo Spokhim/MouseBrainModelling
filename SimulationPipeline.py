@@ -9,7 +9,6 @@ from tvb.simulator.plot.tools import *
 import numpy as np
 import pylab
 import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
 matplotlib.rcParams['figure.figsize'] = (20.0, 10.0)
 from scipy import stats
 #matplotlib.style.use('ggplot')
