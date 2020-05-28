@@ -134,14 +134,16 @@ print(SCorr)
 
 # Export the simulation
 
+time_now = time.strftime("%Y%m%d-%H%M%S")
+
 # Params Dictionary - Note how we sort the dictionary.
-with open("do-not-track\\" + ParamsDict["name"] + "_Params_" +  time.strftime("%Y%m%d-%H%M%S") + "_.csv", "w") as outfile:
+with open("do-not-track\\" + ParamsDict["name"] + "_Params_" + time_now + "_.csv", "w") as outfile:
     writer = csv.writer(outfile)
     for key, val in sorted(ParamsDict.items()):
         writer.writerow([key, val])
     
 # Create Time Series and save. 
 TSeries = np.concatenate((bold_time[Snip:].reshape(1,len(bold_time[Snip:])),TSeriesMatrix))
-np.savetxt("do-not-track\\" + ParamsDict["name"] + "_Tseries_" + time.strftime("%Y%m%d-%H%M%S") + "_.csv", TSeries, delimiter="\t")
-np.savetxt("do-not-track\\" + ParamsDict["name"]  + "_FCM_" + time.strftime("%Y%m%d-%H%M%S") + "_.csv", FCM, delimiter = "\t")
-np.savetxt("do-not-track\\" + ParamsDict["name"]  + "_Scorr_" +  time.strftime("%Y%m%d-%H%M%S") + "_.csv", SCorr, delimiter = "\t")  
+np.savetxt("do-not-track\\" + ParamsDict["name"] + "_Tseries_" + time_now + "_.csv", TSeries, delimiter="\t")
+np.savetxt("do-not-track\\" + ParamsDict["name"]  + "_FCM_" + time_now + "_.csv", FCM, delimiter = "\t")
+np.savetxt("do-not-track\\" + ParamsDict["name"]  + "_Scorr_" +  time_now + "_.csv", SCorr, delimiter = "\t")  
