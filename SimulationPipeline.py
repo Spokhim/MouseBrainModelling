@@ -3,9 +3,6 @@
 # Outputs Time Series Matrix, Parameters, FCM and SCM vs FCM Spearson Correlation 
 
 # First Import the packages.
-from tvb.simulator.lab import *
-LOG = get_logger('demo')
-from tvb.simulator.plot.tools import *
 import numpy as np
 import pylab
 import matplotlib.pyplot as plt
@@ -16,6 +13,13 @@ import inspect
 import os
 import csv 
 import time
+
+import sys
+sys.path.insert(1, '~/tvb_data/Lib/site-packages/tvb/simulator')
+
+from lab import *
+LOG = get_logger('demo')
+# from tvb.simulator.plot.tools import *
 
 # ## Main adjustments below, can hopefully get away with only changing cell below!
 
