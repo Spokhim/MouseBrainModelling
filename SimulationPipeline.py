@@ -6,18 +6,20 @@
 import numpy as np
 import pylab
 import matplotlib.pyplot as plt
-matplotlib.rcParams['figure.figsize'] = (20.0, 10.0)
+# matplotlib.rcParams['figure.figsize'] = (20.0, 10.0)
 from scipy import stats
-#matplotlib.style.use('ggplot')
+# matplotlib.style.use('ggplot')
 import inspect
 import os
 import csv 
 import time
 
+'''
 import sys
 sys.path.insert(1, '~/tvb_data/Lib/site-packages/tvb/simulator')
+'''
 
-from lab import *
+from tvb.simulator.lab import *
 LOG = get_logger('demo')
 # from tvb.simulator.plot.tools import *
 
@@ -47,19 +49,19 @@ ParamsDict["RandState"] = 118
 ParamsDict["Simul_length"] = 1.2e6
 
 # Set Linear Coupling Constant:
-ParamsDict["G"] = 0.096
+ParamsDict["G"] = np.array([0.096])
 
 # Set integrator time step dt.
 ParamsDict["dt"] = 0.1
 
 # Set Additive Noise strength
-ParamsDict["noise"] = 0.000013
+ParamsDict["noise"] = np.array([0.000013])
 
 # Set Wilson Cowan Model Parameters
-ParamsDict["MODEL_c_ee"] = 12
-ParamsDict["MODEL_c_ei"] = 15
-ParamsDict["MODEL_c_ie"] = 10
-ParamsDict["MODEL_c_ii"] = 8
+ParamsDict["MODEL_c_ee"] = np.array([12.0])
+ParamsDict["MODEL_c_ei"] = np.array([15.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([8.0])
 
 # Define the model. 
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"]) 
