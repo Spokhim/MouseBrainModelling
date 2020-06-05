@@ -19,5 +19,5 @@ source ~/TVB/bin/activate.csh
 
 # Working directory is where I ran qsub
 cd "$PBS_O_WORKDIR"
-python SimulationPipeline.python
+python SimulationPipeline.py
 exit
