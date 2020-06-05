@@ -14,11 +14,6 @@ import os
 import csv 
 import time
 
-'''
-import sys
-sys.path.insert(1, '~/tvb_data/Lib/site-packages/tvb/simulator')
-'''
-
 from tvb.simulator.lab import *
 LOG = get_logger('demo')
 # from tvb.simulator.plot.tools import *
