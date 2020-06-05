@@ -8,7 +8,7 @@
 #PBS -l walltime=10:00:00
 # Send e-mail if job ends or aborts
 #PBS -m bea
-#PBS –M psiu5120@uni.sydney.edu.au
+#PBS -M psiu5120@uni.sydney.edu.au
 #PBS -V
 
 # Show the host on which the job ran
