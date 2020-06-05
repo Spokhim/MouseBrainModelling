@@ -72,7 +72,7 @@ ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=Para
 #models.WilsonCowan(r_e=1.0,r_i=1.0,b_e=4.0,b_i=4.0,alpha_e=1.0,alpha_i=2.0,P=0)
 
 # Load the connectivity data from a zip file. 
-con = connectivity.Connectivity.from_file(os.getcwd() +"\\Connectomes\\" + ParamsDict["name"] + ".zip")
+con = connectivity.Connectivity.from_file(os.getcwd() +"/Connectomes/" + ParamsDict["name"] + ".zip")
 
 # Mouse Allen Connectivity (from within TVB)
 # con = connectivity.Connectivity.from_file("../mouse/allen_2mm/Connectivity.h5")
