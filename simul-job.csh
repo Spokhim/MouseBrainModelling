@@ -2,7 +2,6 @@
 
 #!/bin/csh
 #PBS -N simul-job
-#PBS -q yossarian
 #PBS -l select=1:ncpus=4:mem=8GB
 # Minimum acceptable walltime: day-hours:mins:secs
 #PBS -l walltime=10:00:00
