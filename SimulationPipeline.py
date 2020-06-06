@@ -90,7 +90,7 @@ def Simul_Pipeline(ParamsDict):
     time_now = time.strftime("%Y%m%d-%H%M%S")
 
     # Params Dictionary - Note how we sort the dictionary.
-    with open("do-not-track/" + ParamsDict["name"] + "_Params_" + time_now + "_.csv", "w") as outfile:
+    with open("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"] + "_Params_" + time_now + "_.csv", "w") as outfile:
         writer = csv.writer(outfile)
         for key, val in sorted(ParamsDict.items()):
             writer.writerow([key, val])
