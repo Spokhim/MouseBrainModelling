@@ -61,16 +61,6 @@ ParamsDict["MODEL_c_ii"] = np.array([8.0])
 # Define the model. 
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"]) 
 
-# models.WilsonCowan(c_ee=np.array([0,11,0,0,0]),c_ei=np.array([0,10,0,0,0]),c_ie=np.array([0,10,0,0,0]),c_ii=np.array([0,11,0,0,0]),b_e=2.5,b_i=3) 
-# models.WilsonCowan(c_ee=np.arange(11,19,2),c_ei=10,c_ie=10,c_ii=1,b_e=2.5,b_i=3) 
-# models.WilsonCowan(c_ee=np.arange(11,16,1)) 
-# models.WilsonCowan()
-
-# models.ReducedWongWang(w=1.0, I_o=0.3)
-# models.ReducedWongWang(w=1.0, I_o=0.3)
-
-#models.WilsonCowan(r_e=1.0,r_i=1.0,b_e=4.0,b_i=4.0,alpha_e=1.0,alpha_i=2.0,P=0)
-
 # Load the connectivity data from a zip file. 
 con = connectivity.Connectivity.from_file(os.getcwd() +"/Connectomes/" + ParamsDict["name"] + ".zip")
 
