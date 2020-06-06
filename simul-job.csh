@@ -2,7 +2,7 @@
 
 #!/bin/csh
 #PBS -N simul-job
-#PBS -l select=1:ncpus=4:mem=8GB
+#PBS -l select=1:ncpus=12:mem=8GB
 # Minimum acceptable walltime: day-hours:mins:secs
 #PBS -l walltime=10:00:00
 # Send e-mail if job ends or aborts
