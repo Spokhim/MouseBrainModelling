@@ -6,16 +6,13 @@
 import numpy as np
 import pylab
 import matplotlib.pyplot as plt
-# matplotlib.rcParams['figure.figsize'] = (20.0, 10.0)
 from scipy import stats
-# matplotlib.style.use('ggplot')
 import inspect
 import os
 import csv 
 import time
 
 from tvb.simulator.lab import *
-# LOG = get_logger('demo')
 from tvb.simulator.plot.tools import *
 
 def Simul_Pipeline(ParamsDict):
@@ -62,11 +59,10 @@ def Simul_Pipeline(ParamsDict):
     Snip = ParamsDict["Snip"]
 
     # Functional Connectivity Matrix. 
-    # We note that this is a static analysis.  More advanced version would be a DYnamic version with windowing.
+    # We note that this is a static analysis.  More advanced version would be a Dynamic version with windowing.
 
     # Convert Simulation output into a form usable by Numpy.
     TSeriesMatrix = np.empty((bold_data.shape[2], bold_data.shape[0]-Snip))
-    #Matrix = []
 
     for i in range(bold_data.shape[2]):
         TSeriesMatrix[i] = bold_data[Snip:,0,i].flatten()
