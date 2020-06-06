@@ -19,9 +19,9 @@ from tvb.simulator.lab import *
 from tvb.simulator.plot.tools import *
 
 def Simul_Pipeline(ParamsDict):
-'''
-Simulation Pipeline, Does the simulations and returns Scorr of FC vs SC.  Saves some csvs in do-no-track folder.  Takes in inputs as ParamsDict
-'''
+    '''
+    Simulation Pipeline, Does the simulations and returns Scorr of FC vs SC.  Saves some csvs in do-no-track folder.  Takes in inputs as ParamsDict
+    '''
 
     # Load the connectivity data from a zip file. 
     con = connectivity.Connectivity.from_file(os.getcwd() +"/Connectomes/" + ParamsDict["name"] + ".zip")
