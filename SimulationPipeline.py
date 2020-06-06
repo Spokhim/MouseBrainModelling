@@ -97,9 +97,9 @@ def Simul_Pipeline(ParamsDict):
         
     # Create Time Series and save. 
     TSeries = np.concatenate((bold_time[Snip:].reshape(1,len(bold_time[Snip:])),TSeriesMatrix))
-    np.savetxt("do-not-track/" + ParamsDict["name"] + "_Tseries_" + time_now + "_.csv", TSeries, delimiter="\t")
-    np.savetxt("do-not-track/" + ParamsDict["name"]  + "_FCM_" + time_now + "_.csv", FCM, delimiter = "\t")
-    np.savetxt("do-not-track/" + ParamsDict["name"]  + "_Scorr_" +  time_now + "_.csv", SCorr, delimiter = "\t")  
+    np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"] + "_Tseries_" + time_now + "_.csv", TSeries, delimiter="\t")
+    np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"]  + "_FCM_" + time_now + "_.csv", FCM, delimiter = "\t")
+    np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"]  + "_Scorr_" +  time_now + "_.csv", SCorr, delimiter = "\t")  
 
     return
 
