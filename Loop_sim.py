@@ -16,6 +16,9 @@ import time
 from tvb.simulator.lab import *
 from tvb.simulator.plot.tools import *
 
+# Input Simulation Pipeline
+from SimulationPipeline import *
+
 ################################################################################################################################
 # These are Default Values for ParamsDict.  
 
@@ -38,7 +41,7 @@ if ParamsDict["BOLD"] == False:
 ParamsDict["RandState"] = 118
 
 # Set Simulation Length:
-ParamsDict["Simul_length"] = 1.2e6
+ParamsDict["Simul_length"] = 1.2e5
 
 # Set Linear Coupling Constant:
 ParamsDict["G"] = np.array([0.096])
@@ -61,4 +64,5 @@ ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=Para
 ################################################################################################################################
 
 # Run the actual pipeline through a loop.
+
 Simul_Pipeline(ParamsDict=ParamsDict)
