@@ -61,8 +61,21 @@ ParamsDict["MODEL_c_ii"] = np.array([8.0])
 # Define the model. 
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"]) 
 
+# Params Dict tag (extra note tags for the name - Example to denote what's being changed/looped.)
+ParamsDict["tag"] = ""
+
 ################################################################################################################################
 
 # Run the actual pipeline through a loop.
+i = 0
+while i <20:
+    ParamsDict["tag"] = "G" + str(i)
+    ParamsDict["G"] = np.array([0.01]) + i/100
+    
+    Simul_Pipeline(ParamsDict=ParamsDict)
+
+    print(ParamsDict["tag"] ,"Completed")
+
+    i = i+1 
 
 Simul_Pipeline(ParamsDict=ParamsDict)
