@@ -75,11 +75,28 @@ def Simul_Pipeline(ParamsDict):
 
     FCM = np.corrcoef(TSeriesMatrix)
 
-    # Comparing SC Vs FC with Spearman Correlation
+    # Set diagonals to NaN
+    FCM1 = FCM
+    np.fill_diagonal(FCM1,np.nan)
 
-    # Grab Upper triangles
-    FCM_Upper = FCM[np.triu_indices(FCM.shape[0], k = 1)]
-    SCM_Upper = con.weights[np.triu_indices(con.weights.shape[0], k = 1)]
+    # Comparing SC vs FC with Spearman Corr
+    # Check if SCM is symmetric: 
+    SCM = con.weights
+    Sym_check = numpy.allclose(SCM, SCM.T,equal_nan=True)
+
+    if Sym_check == True:
+        #It is a symmetric SCM, so only use upper triangles
+        # Grab Upper triangles
+        FCM_Upper = FCM[np.triu_indices(FCM.shape[0], k = 1)]
+        SCM_Upper = con.weights[np.triu_indices(con.weights.shape[0], k = 1)]
+
+    elif Sym_check == False:
+        # If SCM is not symmetric, need to calcualte spearman corr for entire matrix.
+        # Set Diagonal to Nans
+        np.fill_diagonal(SCM,np.nan)
+        # Remove all Nans for SCM and FCM
+        SCM_Upper = SCM[~numpy.isnan(SCM)]
+        FCM_Upper = FCM1[~numpy.isnan(FCM1)]
 
     # Spearman Correlation
     SCorr = stats.spearmanr(a=FCM_Upper,b=SCM_Upper)
