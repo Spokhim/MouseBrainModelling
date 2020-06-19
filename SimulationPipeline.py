@@ -26,6 +26,10 @@ def Simul_Pipeline(ParamsDict):
     # Mouse Allen Connectivity (from within TVB)
     # con = connectivity.Connectivity.from_file("../mouse/allen_2mm/Connectivity.h5")
 
+    # Change to Connectome to Binary if desired:
+    if ParamsDict["BINARY"]==True:
+        con.weights = con.weights!=0
+
     # Set the parameter of the resting state simulation
     if ParamsDict["BOLD"] == True:
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
