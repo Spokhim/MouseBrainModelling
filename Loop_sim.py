@@ -31,7 +31,7 @@ ParamsDict["name"] = "MouseCortex"
 # Monitors or not?  (Aka BOLD or not?)
 ParamsDict["BOLD"] = True
 
-# Change to Binary Connectome? (If True, will changed the connectome into binary)
+# Change to Binary Connectome? (If True, will change the connectome into binary)
 ParamsDict["BINARY"] = True
 
 # Snip is the the number of elements you wish to snip at the start to remove the initial condition effects.
