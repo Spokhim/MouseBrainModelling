@@ -10,6 +10,9 @@
 #PBS -M psiu5120@uni.sydney.edu.au
 #PBS -V
 
+# -J Specifies Job Array with Indices 
+#PBS -J 1-10
+
 # Show the host on which the job ran
 hostname
 module load Anaconda3-5.1.0
@@ -19,5 +22,5 @@ source ~/TVB/bin/activate.csh
 
 # Working directory is where I ran qsub
 cd "$PBS_O_WORKDIR"
-python Loop_sim.py
+python Loop_sim.py $PBS_ARRAY_INDEX
 exit

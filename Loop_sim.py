@@ -13,6 +13,7 @@ import inspect
 import os
 import csv 
 import time
+import sys
 from tvb.simulator.lab import *
 from tvb.simulator.plot.tools import *
 
@@ -69,16 +70,13 @@ ParamsDict["tag"] = ""
 
 ################################################################################################################################
 
-# Run the actual pipeline through a loop.
-i = 0
-while i <20:
-    ParamsDict["tag"] = "G" + str(i)
-    ParamsDict["G"] = np.array([0.01]) + i/100
-    
-    Simul_Pipeline(ParamsDict=ParamsDict)
+# i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
+i = int(sys.argv[1])
 
-    print(ParamsDict["tag"] ,"Completed")
+ParamsDict["G"] = np.array([i*0.2]) 
+ParamsDict["tag"] = "G" + str(ParamsDict["G"])
 
-    i = i+1 
-
+# Run Simulation Pipeline Once
 Simul_Pipeline(ParamsDict=ParamsDict)
+
+# print(ParamsDict["tag"] ,"Completed")
