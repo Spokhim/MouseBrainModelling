@@ -71,11 +71,23 @@ ParamsDict["tag"] = ""
 ################################################################################################################################
 
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
-i = int(sys.argv[1])
+# i = int(sys.argv[1])
 
-ParamsDict["G"] = np.array([i*0.2]) 
-ParamsDict["tag"] = "G" + str(ParamsDict["G"])
+ParamsDict["G"] = np.array([0.47]) 
+# Lower noise: 
+ParamsDict["noise"] = np.array([0.0000013])
+ParamsDict["tag"] = "G" + str(ParamsDict["G"]) +"lownoise"
+Simul_Pipeline(ParamsDict=ParamsDict)
 
+# Higher noise:
+ParamsDict["noise"] = np.array([0.00013])
+ParamsDict["tag"] = "G" + str(ParamsDict["G"]) +"highnoise"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# No BOLD:
+ParamsDict["noise"] = np.array([0.000013])
+ParamsDict["BOLD"] = False
+ParamsDict["tag"] = "NoBOLD"
 # Run Simulation Pipeline Once
 Simul_Pipeline(ParamsDict=ParamsDict)
 
