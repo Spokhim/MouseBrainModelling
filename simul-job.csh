@@ -21,5 +21,6 @@ source ~/TVB/bin/activate.csh
 
 # Working directory is where I ran qsub
 cd "$PBS_O_WORKDIR"
-python Loop_sim.py $PBS_ARRAY_INDEX
+python Loop_sim.py 
+# $PBS_ARRAY_INDEX
 exit
