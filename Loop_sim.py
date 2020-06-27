@@ -37,9 +37,7 @@ ParamsDict["BINARY"] = True
 
 # Snip is the the number of elements you wish to snip at the start to remove the initial condition effects.
 ParamsDict["Snip"] = 10
-# Note, if BOLD = False, Snip gets multiplied by 1000. 
-if ParamsDict["BOLD"] == False:
-    ParamsDict["Snip"] = 1000 * ParamsDict["Snip"]
+# Note, if BOLD = False, Snip gets multiplied by 1000, later in the SimulationPipeline code.  Not the actual dictionary element though.  
 
 # Set the Random State/Seed for the Stochastic Integrator:
 ParamsDict["RandState"] = 118

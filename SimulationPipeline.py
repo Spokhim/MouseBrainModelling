@@ -61,6 +61,9 @@ def Simul_Pipeline(ParamsDict):
 
     # Got lazy
     Snip = ParamsDict["Snip"]
+    # Note, if BOLD = False, Snip gets multiplied by 1000. 
+    if ParamsDict["BOLD"] == False:
+        Snip = 1000 * Snip
 
     # Functional Connectivity Matrix. 
     # We note that this is a static analysis.  More advanced version would be a Dynamic version with windowing.
