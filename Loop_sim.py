@@ -46,7 +46,7 @@ ParamsDict["RandState"] = 118
 ParamsDict["Simul_length"] = 1.2e6
 
 # Set Linear Coupling Constant:
-ParamsDict["G"] = np.array([0.096])
+ParamsDict["G"] = np.array([0.47]) 
 
 # Set integrator time step dt.
 ParamsDict["dt"] = 0.1
@@ -71,22 +71,16 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 # i = int(sys.argv[1])
 
-ParamsDict["G"] = np.array([0.47]) 
-# Lower noise: 
-ParamsDict["noise"] = np.array([0.0000013])
-ParamsDict["tag"] = "G" + str(ParamsDict["G"]) +"lownoise"
+# Try Heterogeneous
+df = pd.read_csv("CortexDensities.csv",delimiter=",")
+w_ei = (df.excitatory/df.inhibitory).values
+ParamsDict["MODEL_c_ei"] = w_ei
+ParamsDict["tag"] = "Het_wei"
 Simul_Pipeline(ParamsDict=ParamsDict)
 
-# Higher noise:
-ParamsDict["noise"] = np.array([0.00013])
-ParamsDict["tag"] = "G" + str(ParamsDict["G"]) +"highnoise"
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-# No BOLD:
-ParamsDict["noise"] = np.array([0.000013])
-ParamsDict["BOLD"] = False
-ParamsDict["tag"] = "NoBOLD"
-# Run Simulation Pipeline Once
+# And let's invert take w_ie = 1/w_ei and see what happens
+ParamsDict["MODEL_c_ie"] = 1/w_ei
+ParamsDict["tag"] = "Het_wei_wie"
 Simul_Pipeline(ParamsDict=ParamsDict)
 
 # print(ParamsDict["tag"] ,"Completed")
