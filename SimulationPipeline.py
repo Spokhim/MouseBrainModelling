@@ -4,6 +4,7 @@
 
 # First Import the packages.
 import numpy as np
+import pandas as pd
 import pylab
 import matplotlib.pyplot as plt
 from scipy import stats
