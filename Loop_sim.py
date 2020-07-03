@@ -61,8 +61,7 @@ ParamsDict["MODEL_c_ei"] = np.array([15.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([8.0])
 
-# Define the model. 
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"]) 
+# Model is now defined within SimulationPipeline.py
 
 # Params Dict tag (extra note tags for the name - Example to denote what's being changed/looped.)
 ParamsDict["tag"] = ""
