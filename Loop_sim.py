@@ -77,10 +77,11 @@ w_ei = (df.excitatory/df.inhibitory).values
 ParamsDict["MODEL_c_ei"] = w_ei
 ParamsDict["tag"] = "Het_wei"
 Simul_Pipeline(ParamsDict=ParamsDict)
+print(ParamsDict["tag"] ,"Completed")
 
 # And let's invert take w_ie = 1/w_ei and see what happens
 ParamsDict["MODEL_c_ie"] = 1/w_ei
 ParamsDict["tag"] = "Het_wei_wie"
 Simul_Pipeline(ParamsDict=ParamsDict)
 
-# print(ParamsDict["tag"] ,"Completed")
+print(ParamsDict["tag"] ,"Completed")
