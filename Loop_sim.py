@@ -71,17 +71,22 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 # i = int(sys.argv[1])
 
-# Try Heterogeneous
+# Try Heterogeneous - Something kinda dumb
 df = pd.read_csv("CortexDensities.csv",delimiter=",")
-w_ei = (df.excitatory/df.inhibitory).values
-ParamsDict["MODEL_c_ei"] = w_ei
-ParamsDict["tag"] = "Het_wei"
+w_ei = (df.excitatory/df.inhibitory)
+# Sort w_ei
+w_ei= pd.DataFrame(w_ei)
+#w_ei.sort_values(by=df.columns[1])
+
+w_ei.columns = ["Ratio"]
+df1 = w_ei.sort_values(by="Ratio")
+
+# Add Gradient.  + Profit. 
+df1["Gradient"] = 12 + np.linspace(0,6,38)
+Grad = df1.sort_index()["Gradient"].values
+
+ParamsDict["MODEL_c_ei"] = Grad
+ParamsDict["tag"] = "Het_wei_12Fairgrad"
 Simul_Pipeline(ParamsDict=ParamsDict)
 print(ParamsDict["tag"] ,"Completed")
 
-# And let's invert take w_ie = 1/w_ei and see what happens
-ParamsDict["MODEL_c_ie"] = 1/w_ei
-ParamsDict["tag"] = "Het_wei_wie"
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-print(ParamsDict["tag"] ,"Completed")
