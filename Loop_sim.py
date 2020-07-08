@@ -77,34 +77,36 @@ i = int(sys.argv[1])
 if i == 0:
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 1e-4 
-    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
 if i == 1: 
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 5e-4 
-    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
 if i == 2:
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 1e-3
-    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
 if i == 3: 
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 5e-3
-    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
 if i == 4:
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 1e-2
-    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
+
+print("Happilly Finished All!")
