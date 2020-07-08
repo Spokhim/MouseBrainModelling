@@ -74,35 +74,35 @@ i = int(sys.argv[1])
 # Try Heterogeneous - Something kinda dumb
 # df = pd.read_csv("CortexDensities.csv",delimiter=",")
 
-if i = 0:
+if i == 0:
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 1e-4 
     ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
-if i =1: 
+if i == 1: 
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 5e-4 
     ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
-if i = 2:
+if i == 2:
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 1e-3
     ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
-if i = 3: 
+if i == 3: 
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 5e-3
     ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
-if i = 4:
+if i == 4:
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = 1e-2
     ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
