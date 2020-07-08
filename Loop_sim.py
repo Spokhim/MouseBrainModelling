@@ -73,11 +73,31 @@ ParamsDict["tag"] = ""
 i = int(sys.argv[1])
 
 # Try Heterogeneous - Something kinda dumb
-# df = pd.read_csv("CortexDensities.csv",delimiter=",")
+df = pd.read_csv("CortexDensities.csv",delimiter=",")
+E_pop = df.excitatory.values
+I_pop = df.inhibitory.values
+E_mean = np.mean(E_pop)
+I_mean = np.mean(I_pop)
 
-a_e = np.array([10**(2 - i)])
-ParamsDict["tag"] = "a_e" + str(a_e)
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],a_e=a_e) 
+# E_normalised is -0.88 to 0.58
+E_normalised = (E_pop-E_mean)/E_mean
+# I_normalised is - 0.48 to 2.28
+I_normalised = (I_pop-I_mean)/I_mean
+# Sigma
+sigma = i*0.2 
+# Homogeneous Coupling constants
+h_ee = 12
+h_ei = 15
+h_ie = 10
+h_ii = 8
+
+# Heterogeneous Coupling Constants (array)
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+
+ParamsDict["tag"] = "Het" + str(sigma)
 Simul_Pipeline(ParamsDict=ParamsDict)
 print(ParamsDict["tag"] ,"Completed")
 
