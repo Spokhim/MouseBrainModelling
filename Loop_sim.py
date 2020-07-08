@@ -62,6 +62,7 @@ ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([8.0])
 
 # Model is now defined within SimulationPipeline.py
+# However if you adjusting parameters other than these Coupling Parameters, then you need to redefine the model in this file per run.
 
 # Params Dict tag (extra note tags for the name - Example to denote what's being changed/looped.)
 ParamsDict["tag"] = ""
@@ -74,39 +75,10 @@ i = int(sys.argv[1])
 # Try Heterogeneous - Something kinda dumb
 # df = pd.read_csv("CortexDensities.csv",delimiter=",")
 
-if i == 0:
-    ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 1e-4 + np.array([0.0]) 
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
-
-if i == 1: 
-    ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 5e-4 + np.array([0.0]) 
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
-
-if i == 2:
-    ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 1e-3+ np.array([0.0]) 
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
-
-if i == 3: 
-    ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 5e-3+ np.array([0.0]) 
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
-
-if i == 4:
-    ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 1e-2+ np.array([0.0]) 
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
+a_e = np.array([10**(2 - i)])
+ParamsDict["tag"] = "a_e" + str(a_e)
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],a_e=a_e) 
+Simul_Pipeline(ParamsDict=ParamsDict)
+print(ParamsDict["tag"] ,"Completed")
 
 print("Happilly Finished All!")
