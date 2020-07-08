@@ -69,24 +69,42 @@ ParamsDict["tag"] = ""
 ################################################################################################################################
 
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
-# i = int(sys.argv[1])
+i = int(sys.argv[1])
 
 # Try Heterogeneous - Something kinda dumb
-df = pd.read_csv("CortexDensities.csv",delimiter=",")
-w_ei = (df.excitatory/df.inhibitory)
-# Sort w_ei
-w_ei= pd.DataFrame(w_ei)
-#w_ei.sort_values(by=df.columns[1])
+# df = pd.read_csv("CortexDensities.csv",delimiter=",")
 
-w_ei.columns = ["Ratio"]
-df1 = w_ei.sort_values(by="Ratio")
+if i = 0:
+    ParamsDict["BINARY"] = False
+    ParamsDict["G"] = 1e-4 
+    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    Simul_Pipeline(ParamsDict=ParamsDict)
+    print(ParamsDict["tag"] ,"Completed")
 
-# Add Gradient.  + Profit. 
-df1["Gradient"] = 12 + np.linspace(0,6,38)
-Grad = df1.sort_index()["Gradient"].values
+if i =1: 
+    ParamsDict["BINARY"] = False
+    ParamsDict["G"] = 5e-4 
+    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    Simul_Pipeline(ParamsDict=ParamsDict)
+    print(ParamsDict["tag"] ,"Completed")
 
-ParamsDict["MODEL_c_ei"] = Grad
-ParamsDict["tag"] = "Het_wei_12Fairgrad"
-Simul_Pipeline(ParamsDict=ParamsDict)
-print(ParamsDict["tag"] ,"Completed")
+if i = 2:
+    ParamsDict["BINARY"] = False
+    ParamsDict["G"] = 1e-3
+    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    Simul_Pipeline(ParamsDict=ParamsDict)
+    print(ParamsDict["tag"] ,"Completed")
 
+if i = 3: 
+    ParamsDict["BINARY"] = False
+    ParamsDict["G"] = 5e-3
+    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    Simul_Pipeline(ParamsDict=ParamsDict)
+    print(ParamsDict["tag"] ,"Completed")
+
+if i = 4:
+    ParamsDict["BINARY"] = False
+    ParamsDict["G"] = 1e-2
+    ParamsDict["tag"] = "Non-bin" + ParamsDict["G"]
+    Simul_Pipeline(ParamsDict=ParamsDict)
+    print(ParamsDict["tag"] ,"Completed")
