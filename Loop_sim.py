@@ -79,7 +79,7 @@ if i == 1:
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = np.array([1000]) 
     ParamsDict["name"] = "Mouse_FCM"
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
+    ParamsDict["tag"] = "MFCM" + str(ParamsDict["G"])
 
 
     Simul_Pipeline(ParamsDict=ParamsDict)
@@ -89,7 +89,7 @@ if i == 2:
     ParamsDict["BINARY"] = False
     ParamsDict["G"] = np.array([500]) 
     ParamsDict["name"] = "Mouse_FCM"
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
+    ParamsDict["tag"] = "MFCM" + str(ParamsDict["G"])
 
 
     Simul_Pipeline(ParamsDict=ParamsDict)
@@ -99,7 +99,7 @@ if i == 3:
     ParamsDict["BINARY"] = False
     ParamsDict["name"] = "Mouse_FCM_self1"
     ParamsDict["G"] = np.array(500]) 
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
+    ParamsDict["tag"] = "MFCM_1" + str(ParamsDict["G"])
 
 
     Simul_Pipeline(ParamsDict=ParamsDict)
@@ -109,7 +109,7 @@ if i == 4:
     ParamsDict["BINARY"] = False
     ParamsDict["name"] = "Mouse_FCM_self1"
     ParamsDict["G"] = np.array([1000]) 
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
+    ParamsDict["tag"] = "MFCM_1" + str(ParamsDict["G"])
 
 
     Simul_Pipeline(ParamsDict=ParamsDict)
@@ -117,5 +117,38 @@ if i == 4:
 
 if i == 5:
 
+    ParamsDict["BINARY"] = False
+    ParamsDict["G"] = np.array([500]) 
+    ParamsDict["name"] = "Mouse_FCM"
+    ParamsDict["tag"] = "MFCM_Het" + str(ParamsDict["G"])
+
+    df = pd.read_csv("CortexDensities.csv",delimiter=",")
+    E_pop = df.excitatory.values
+    I_pop = df.inhibitory.values
+
+    E_mean = np.mean(E_pop)
+    I_mean = np.mean(I_pop)
+
+    # E_normalised is -0.88 to 0.58
+    E_normalised = (E_pop-E_mean)/E_mean
+    # I_normalised is - 0.48 to 2.28
+    I_normalised = (I_pop-I_mean)/I_mean
+    # Sigma
+    sigma = 0.2 
+    # Homogeneous Coupling constants
+    h_ee = 12
+    h_ei = 15
+    h_ie = 10
+    h_ii = 8
+
+    # Heterogeneous Coupling Constants (array)
+    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+
+
+    Simul_Pipeline(ParamsDict=ParamsDict)
+    print(ParamsDict["tag"] ,"Completed")
 
 print("Happilly Finished All!")
