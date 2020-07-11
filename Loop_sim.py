@@ -75,39 +75,47 @@ i = int(sys.argv[1])
 # Try Heterogeneous - Something kinda dumb
 # df = pd.read_csv("CortexDensities.csv",delimiter=",")
 
-if i == 5:
-    ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 1e+4 + np.array([0.0]) 
-    ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
-
 if i == 1: 
     ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 5e+3 + np.array([0.0]) 
+    ParamsDict["G"] = np.array([1000]) 
+    ParamsDict["name"] = "Mouse_FCM"
     ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
+
+
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
 if i == 2:
     ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 1e+3+ np.array([0.0]) 
+    ParamsDict["G"] = np.array([500]) 
+    ParamsDict["name"] = "Mouse_FCM"
     ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
+
+
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
 if i == 3: 
     ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 5e+2+ np.array([0.0]) 
+    ParamsDict["name"] = "Mouse_FCM_self1"
+    ParamsDict["G"] = np.array(500]) 
     ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
+
+
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
 
 if i == 4:
     ParamsDict["BINARY"] = False
-    ParamsDict["G"] = 1e+2+ np.array([0.0]) 
+    ParamsDict["name"] = "Mouse_FCM_self1"
+    ParamsDict["G"] = np.array([1000]) 
     ParamsDict["tag"] = "Non-bin" + str(ParamsDict["G"])
+
+
     Simul_Pipeline(ParamsDict=ParamsDict)
     print(ParamsDict["tag"] ,"Completed")
+
+if i == 5:
+
 
 print("Happilly Finished All!")
