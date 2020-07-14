@@ -87,7 +87,7 @@ def Simul_Pipeline(ParamsDict):
     FCM1 = FCM
     np.fill_diagonal(FCM1,np.nan)
 
-    # Comparing SC vs FC with Spearman Corr
+    # Comparing SC vs FC with Spearman Corr  (Known as SCFC)
     # Check if SCM is symmetric: 
     SCM = con.weights
     Sym_check = numpy.allclose(SCM, SCM.T,equal_nan=True)
@@ -109,6 +109,24 @@ def Simul_Pipeline(ParamsDict):
     # Spearman Correlation
     SCorr = stats.spearmanr(a=FCM_Upper,b=SCM_Upper)
     print(SCorr)
+
+# Calculate FC-FC score for mouse if requested.
+    if ParamsDict["FCFC"] == True:
+        # FCM_exp
+        FCM_exp = np.genfromtxt('FCM_MouseExperimental.csv',delimiter = "\t")
+        # Set diagonals to NaN
+        np.fill_diagonal(FCM_exp,np.nan)
+
+        # Comparing FC_experimental Vs FC_Simulation with Spearman Correlation
+
+        FCM_Exp_U = FCM_exp[np.triu_indices(FCM_exp.shape[0], k = 1)]  
+        FCM_Upper = FCM[np.triu_indices(FCM.shape[0], k = 1)]
+
+        # FC-FC Spearman Correlation
+        FCFC = stats.spearmanr(a=FCM_Exp_U,b=FCM_Upper)
+        print(FCFC)
+        # Concancatanate to end of SCorr output file. 
+        SCorr = SCorr + FCFC
 
     # Export the simulation
 

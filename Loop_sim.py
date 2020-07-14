@@ -30,6 +30,9 @@ ParamsDict = { }
 # Name of import file/zip - Which contains connectivity data.
 ParamsDict["name"] = "MouseCortex"
 
+# Calculate FC-FC for Mouse?
+ParamsDict["FCFC"] = True
+
 # Monitors or not?  (Aka BOLD or not?)
 ParamsDict["BOLD"] = True
 
@@ -98,7 +101,7 @@ if i == 2:
 if i == 3: 
     ParamsDict["BINARY"] = False
     ParamsDict["name"] = "Mouse_FCM_self1"
-    ParamsDict["G"] = np.array(500]) 
+    ParamsDict["G"] = np.array([500]) 
     ParamsDict["tag"] = "MFCM_1" + str(ParamsDict["G"])
 
 
