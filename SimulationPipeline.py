@@ -42,7 +42,7 @@ def Simul_Pipeline(ParamsDict):
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
                                 integrator=integrators.EulerStochastic(dt=ParamsDict["dt"],noise=noise.Additive(nsig=ParamsDict["noise"],
                                             random_stream=np.random.RandomState(ParamsDict["RandState"]))),
-                                monitors=(monitors.Bold(period=2e3),
+                                monitors=(monitors.Bold(period=1e3),
                                         monitors.TemporalAverage(period=1e3)),
                                 simulation_length=ParamsDict["Simul_length"],
                                 #initial_conditions=[1.8,1.8,1.8,1.8,1.8]
@@ -107,8 +107,8 @@ def Simul_Pipeline(ParamsDict):
         FCM_Upper = FCM1[~numpy.isnan(FCM1)]
 
     # Spearman Correlation
-    SCorr = stats.spearmanr(a=FCM_Upper,b=SCM_Upper)
-    print(SCorr)
+    Scorr = stats.spearmanr(a=FCM_Upper,b=SCM_Upper)
+    print(Scorr)
 
 # Calculate FC-FC score for mouse if requested.
     if ParamsDict["FCFC"] == True:
@@ -125,8 +125,8 @@ def Simul_Pipeline(ParamsDict):
         # FC-FC Spearman Correlation
         FCFC = stats.spearmanr(a=FCM_Exp_U,b=FCM_Upper)
         print(FCFC)
-        # Concancatanate to end of SCorr output file. 
-        SCorr = SCorr + FCFC
+        # Concancatanate to end of Scorr output file. 
+        Scorr = Scorr + FCFC
 
     # Export the simulation
 
@@ -142,7 +142,7 @@ def Simul_Pipeline(ParamsDict):
     TSeries = np.concatenate((bold_time[Snip:].reshape(1,len(bold_time[Snip:])),TSeriesMatrix))
     np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"] + "_Tseries_" + time_now + "_.csv", TSeries, delimiter="\t")
     np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"]  + "_FCM_" + time_now + "_.csv", FCM, delimiter = "\t")
-    np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"]  + "_Scorr_" +  time_now + "_.csv", SCorr, delimiter = "\t")  
+    np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"]  + "_Scorr_" +  time_now + "_.csv", Scorr, delimiter = "\t")  
 
     return
 
