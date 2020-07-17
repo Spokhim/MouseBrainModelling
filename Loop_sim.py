@@ -79,50 +79,34 @@ i = int(sys.argv[1])
 df = pd.read_csv("CortexDensities.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
-E_prop = E_pop / (E_pop + I_pop)
+a = E_pop[7]
+b = I_pop[7]
+# Swap the weird values.
+E_pop[7] = b
+I_pop[7] = a
+E_mean = np.mean(E_pop)
+I_mean = np.mean(I_pop)
 
-if i == 1: 
-    ParamsDict["k_e"] = E_prop
-    ParamsDict["tag"] = "k_e"
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                                a_e=numpy.array([1.0]),k_e=ParamsDict["k_e"],k_i=1-ParamsDict["k_e"])  
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
+# E_normalised is -0.88 to 0.58
+E_normalised = (E_pop-E_mean)/E_mean
+# I_normalised is - 0.48 to 2.28
+I_normalised = (I_pop-I_mean)/I_mean
+# Sigma
+sigma = i*0.2 
+# Homogeneous Coupling constants
+h_ee = 12
+h_ei = 15
+h_ie = 10
+h_ii = 8
 
-if i == 2:
-    ParamsDict["k_e"] = 2*E_prop
-    ParamsDict["tag"] = "2k_e"
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                                a_e=numpy.array([1.0]),k_e=ParamsDict["k_e"],k_i=1-ParamsDict["k_e"])  
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
+# Heterogeneous Coupling Constants (array)
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
 
-if i == 3:
-    E_prop[7] = 1 - E_prop[7]
-    ParamsDict["k_e"] = E_prop
-    ParamsDict["tag"] = "k_e_alter"
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                                a_e=numpy.array([1.0]),k_e=ParamsDict["k_e"],k_i=1-ParamsDict["k_e"])  
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
-
-if i == 4:
-    E_prop[7] = 1 - E_prop[7]
-    ParamsDict["k_e"] = 2*E_prop
-    ParamsDict["tag"] = "2k_e_alter"
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                                a_e=numpy.array([1.0]),k_e=ParamsDict["k_e"],k_i=1-ParamsDict["k_e"])  
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
-
-if i == 5:
-    E_prop[7] = 1 - E_prop[7]
-    ParamsDict["k_e"] = 2*E_prop
-    ParamsDict["BOLD"] = False
-    ParamsDict["tag"] = "2k_e_alter_nonBOLD"
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                                a_e=numpy.array([1.0]),k_e=ParamsDict["k_e"],k_i=1-ParamsDict["k_e"])  
-    Simul_Pipeline(ParamsDict=ParamsDict)
-    print(ParamsDict["tag"] ,"Completed")
+ParamsDict["tag"] = "Het" + str(sigma)
+Simul_Pipeline(ParamsDict=ParamsDict)
+print(ParamsDict["tag"] ,"Completed")
 
 print("Happilly Finished All!")
