@@ -24,7 +24,8 @@ def Simul_Pipeline(ParamsDict):
     # Define the model if it is not yet defined.
     if "MODEL" not in ParamsDict:
         ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                                a_e=numpy.array([1.0])) 
+                                                a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([2.8]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                                tau_i=numpy.array([65.0]),) 
 
     # Load the connectivity data from a zip file. 
     con = connectivity.Connectivity.from_file(os.getcwd() +"/Connectomes/" + ParamsDict["name"] + ".zip")
