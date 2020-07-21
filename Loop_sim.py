@@ -76,5 +76,6 @@ ParamsDict["tag"] = ""
 i = int(sys.argv[1])
 ParamsDict["G"] = np.array([0.05*i]) 
 ParamsDict["tag"] = "G" + str(ParamsDict["G"])
+Simul_Pipeline(ParamsDict=ParamsDict)
 
 print("Happilly Finished All!")
