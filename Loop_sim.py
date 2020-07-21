@@ -74,7 +74,7 @@ ParamsDict["tag"] = ""
 
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 i = int(sys.argv[1])
-ParamsDict["G"] = np.array([0.05*i]) 
+ParamsDict["G"] = np.array([1 + 0.05*i]) 
 ParamsDict["tag"] = "G" + str(ParamsDict["G"])
 Simul_Pipeline(ParamsDict=ParamsDict)
 
