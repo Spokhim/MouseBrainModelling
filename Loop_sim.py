@@ -73,18 +73,40 @@ ParamsDict["tag"] = ""
 ################################################################################################################################
 
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
-#i = int(sys.argv[1])
-#ParamsDict["G"] = np.array([1 + 0.05*i]) 
-#ParamsDict["tag"] = "G" + str(ParamsDict["G"])
-#ParamsDict["G"] = np.array([500])
-#ParamsDict["Binary"]=False
+i = int(sys.argv[1])
 
-ParamsDict["Simul_length"] = 1.2e7
-ParamsDict["tag"] = "Length" + str(ParamsDict["Simul_length"])
+df = pd.read_csv("CortexDensities.csv",delimiter=",")
+E_pop = df.excitatory.values
+I_pop = df.inhibitory.values
+E_mean = np.mean(E_pop)
+I_mean = np.mean(I_pop)
+
+# E_normalised is -0.88 to 0.58
+E_normalised = (E_pop-E_mean)/E_mean
+# I_normalised is - 0.48 to 2.28
+I_normalised = (I_pop-I_mean)/I_mean
+# Sigma
+sigma = i*0.2 
+# Homogeneous Coupling constants
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
+
+ParamsDict["G"] = np.array([0.5]) 
+ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
 Simul_Pipeline(ParamsDict=ParamsDict)
 
-ParamsDict["Simul_length"] = 1.2e8 
-ParamsDict["tag"] = "Length" + str(ParamsDict["Simul_length"])
+ParamsDict["G"] = np.array([0.8]) 
+ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+ParamsDict["G"] = np.array([1.1]) 
+ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+ParamsDict["G"] = np.array([1.4]) 
+ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
 Simul_Pipeline(ParamsDict=ParamsDict)
 
 print("Happilly Finished All!")
