@@ -73,9 +73,18 @@ ParamsDict["tag"] = ""
 ################################################################################################################################
 
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
-i = int(sys.argv[1])
-ParamsDict["G"] = np.array([1 + 0.05*i]) 
-ParamsDict["tag"] = "G" + str(ParamsDict["G"])
+#i = int(sys.argv[1])
+#ParamsDict["G"] = np.array([1 + 0.05*i]) 
+#ParamsDict["tag"] = "G" + str(ParamsDict["G"])
+#ParamsDict["G"] = np.array([500])
+#ParamsDict["Binary"]=False
+
+ParamsDict["Simul_length"] = 1.2e7
+ParamsDict["tag"] = "Length" + str(ParamsDict["Simul_length"])
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+ParamsDict["Simul_length"] = 1.2e8 
+ParamsDict["tag"] = "Length" + str(ParamsDict["Simul_length"])
 Simul_Pipeline(ParamsDict=ParamsDict)
 
 print("Happilly Finished All!")
