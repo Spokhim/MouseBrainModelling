@@ -93,6 +93,12 @@ h_ei = ParamsDict["MODEL_c_ei"]
 h_ie = ParamsDict["MODEL_c_ie"] 
 h_ii = ParamsDict["MODEL_c_ii"] 
 
+# Heterogeneous Coupling Constants (array)
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+
 ParamsDict["G"] = np.array([0.5]) 
 ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
 Simul_Pipeline(ParamsDict=ParamsDict)
