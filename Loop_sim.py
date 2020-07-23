@@ -46,8 +46,11 @@ ParamsDict["Snip"] = 10
 # Set the Random State/Seed for the Stochastic Integrator:
 ParamsDict["RandState"] = 118
 
+# Remove ith indexed region (7 corresponds to Frontal Pole Cerebral Cortex) - Give it a list if removing multiple regions.  Empty list removes nothing. 
+ParamsDict["REMOVE"] = [7]
+
 # Set Simulation Length:
-ParamsDict["Simul_length"] = 1.2e6
+ParamsDict["Simul_length"] = 1.2e4
 
 # Set Linear Coupling Constant:
 ParamsDict["G"] = np.array([0.47]) 
@@ -75,7 +78,7 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 i = int(sys.argv[1])
 
-df = pd.read_csv("CortexDensities.csv",delimiter=",")
+df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
 E_mean = np.mean(E_pop)
@@ -103,6 +106,7 @@ ParamsDict["G"] = np.array([0.5])
 ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
 Simul_Pipeline(ParamsDict=ParamsDict)
 
+'''
 ParamsDict["G"] = np.array([0.8]) 
 ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
 Simul_Pipeline(ParamsDict=ParamsDict)
@@ -114,5 +118,6 @@ Simul_Pipeline(ParamsDict=ParamsDict)
 ParamsDict["G"] = np.array([1.4]) 
 ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
 Simul_Pipeline(ParamsDict=ParamsDict)
+'''
 
 print("Happilly Finished All!")

@@ -30,8 +30,13 @@ def Simul_Pipeline(ParamsDict):
     # Load the connectivity data from a zip file. 
     con = connectivity.Connectivity.from_file(os.getcwd() +"/Connectomes/" + ParamsDict["name"] + ".zip")
 
-    # Mouse Allen Connectivity (from within TVB)
-    # con = connectivity.Connectivity.from_file("../mouse/allen_2mm/Connectivity.h5")
+    # Remove the ith row and column in centres, tract_lengths and weights. i.e. the specified region(s)
+    con.centres = np.delete(con.centres,ParamsDict["REMOVE"])
+    con.weights = np.delete(con.weights,obj=ParamsDict["REMOVE"],axis=0)
+    con.weights = np.delete(con.weights,obj=ParamsDict["REMOVE"],axis=1)
+    con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=0)
+    con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=1)
+
 
     # Change to Connectome to Binary if desired:
     if ParamsDict["BINARY"]==True:
@@ -118,6 +123,10 @@ def Simul_Pipeline(ParamsDict):
         FCM_exp = np.genfromtxt('FCM_MouseExperimental.csv',delimiter = "\t")
         # Set diagonals to NaN
         np.fill_diagonal(FCM_exp,np.nan)
+
+        # Remove the ith row and column in FCM (i.e. the specified region)
+        FCM_exp = np.delete(FCM_exp,obj=ParamsDict["REMOVE"],axis=0)
+        FCM_exp = np.delete(FCM_exp,obj=ParamsDict["REMOVE"],axis=1)
 
         # Comparing FC_experimental Vs FC_Simulation with Spearman Correlation
 
