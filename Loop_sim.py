@@ -50,7 +50,7 @@ ParamsDict["RandState"] = 118
 ParamsDict["REMOVE"] = [7]
 
 # Set Simulation Length:
-ParamsDict["Simul_length"] = 1.2e4
+ParamsDict["Simul_length"] = 1.2e5
 
 # Set Linear Coupling Constant:
 ParamsDict["G"] = np.array([0.47]) 
@@ -62,13 +62,17 @@ ParamsDict["dt"] = 0.1
 ParamsDict["noise"] = np.array([0.000013])
 
 # Set Wilson Cowan Model Parameters
-ParamsDict["MODEL_c_ee"] = np.array([11.0])
-ParamsDict["MODEL_c_ei"] = np.array([10.0])
+ParamsDict["MODEL_c_ee"] = np.array([16.0])
+ParamsDict["MODEL_c_ei"] = np.array([12.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([1.0])
+ParamsDict["MODEL_c_ii"] = np.array([3.0])
 
 # Model is now defined within SimulationPipeline.py
 # However if you adjusting parameters other than these Coupling Parameters, then you need to redefine the model in this file per run.
+
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([4]),b_i=numpy.array([4]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([10.0])) 
 
 # Params Dict tag (extra note tags for the name - Example to denote what's being changed/looped.)
 ParamsDict["tag"] = ""
@@ -78,8 +82,21 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 i = int(sys.argv[1])
 
-ParamsDict["Simul_length"] = (1.2e3)*(10**i) 
-ParamsDict["tag"] = "Length" + "[" + str(i+3) + "]"
+# Hysteresis Params
+ParamsDict["Simul_length"] = 1.2e5
+ParamsDict["G"] =  np.array([0.05*i])
+ParamsDict["tag"] = "Hysteresis_G" + str(ParamsDict["G"]) 
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# Limit Cycle Params
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([2.8]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) 
 Simul_Pipeline(ParamsDict=ParamsDict)
 
 '''
