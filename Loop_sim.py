@@ -34,14 +34,14 @@ ParamsDict["name"] = "MouseCortex"
 ParamsDict["FCFC"] = True
 
 # Monitors or not?  (Aka BOLD or not?)
-ParamsDict["BOLD"] = True
+ParamsDict["BOLD"] = False
 
 # Change to Binary Connectome? (If True, will change the connectome into binary)
 ParamsDict["BINARY"] = True
 
 # Snip is the the number of elements you wish to snip at the start to remove the initial condition effects.
 ParamsDict["Snip"] = 10
-# Note, if BOLD = False, Snip gets multiplied by 1000, later in the SimulationPipeline code.  Not the actual dictionary element though.  
+# Note, if BOLD = False, Snip gets multiplied by 100, later in the SimulationPipeline code.  Not the actual dictionary element though.  
 
 # Set the Random State/Seed for the Stochastic Integrator:
 ParamsDict["RandState"] = 118
@@ -78,6 +78,11 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 i = int(sys.argv[1])
 
+ParamsDict["Simul_length"] = (1.2e3)*(10**i) 
+ParamsDict["tag"] = "Length" + "[" + str(i+3) + "]"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+'''
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
@@ -106,7 +111,6 @@ ParamsDict["G"] = np.array([0.5])
 ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
 Simul_Pipeline(ParamsDict=ParamsDict)
 
-'''
 ParamsDict["G"] = np.array([0.8]) 
 ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
 Simul_Pipeline(ParamsDict=ParamsDict)
