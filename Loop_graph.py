@@ -41,7 +41,7 @@ def par_extract(file):
     return s_filter
 
 # Get Scorr csv filenames in a folder
-Scorr_files = glob.glob("do-not-track/LCycle*Scorr*.csv")
+Scorr_files = glob.glob("do-not-track/R_LCycle*Scorr*.csv")
 
 SCFC = []
 FCFC = []
