@@ -22,10 +22,14 @@ import pandas as pd
 
 # Input Simulation Pipeline
 from SimulationPipeline import *
+from useful_fns import *
+
+# Empty dict
+ParamsDict = { }
 
 # Ye dunno why having the closing square bracket messes up glob glob. 
-Sim_run_files = glob.glob("do-not-track/LCycle_G[0.45*_.csv")
-Sim_run_files
+Sim_run_files = glob.glob("do-not-track/R_LCycle_G[1.9*_.csv")
+print(Sim_run_files)
 
 # Read file import data
 #df = pd.read_csv(all_files[11],delimiter="\t",header=None)
@@ -46,6 +50,7 @@ plt.ylabel('Amplitude (au)', fontsize=20)
 plt.title('Simulated timeseries', fontsize=20)
 #plt.legend(('0','1','2','3','4'))
 plt.legend(range(38))
+plt.show()
 
 Scorra = np.genfromtxt(Sim_run_files[-2])
 print(Scorra)
@@ -59,6 +64,7 @@ plt.title('Functional connectivity matrix', fontsize=20)
 axcb=plt.colorbar(cs)
 axcb.set_label('Correlation', fontsize=20)
 #plt.yticks([0,1,2,3])
+plt.show()
 
 ParamsDict["REMOVE"] = [7]
 
@@ -83,3 +89,4 @@ plt.xlabel('FCM_exp', fontsize=20)
 plt.ylabel('FCM_sim', fontsize=20)
 plt.title('FCM_sim vs FCM_exp', fontsize=20)
 plt.annotate(SCorr, xy=(0.05, 0.95), xycoords='axes fraction')
+plt.show()

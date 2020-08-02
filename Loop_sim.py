@@ -20,6 +20,7 @@ from tvb.simulator.plot.tools import *
 
 # Input Simulation Pipeline
 from SimulationPipeline import *
+from useful_fns import *
 
 ################################################################################################################################
 # These are Default Values for ParamsDict.  

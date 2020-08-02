@@ -22,23 +22,13 @@ import pandas as pd
 
 # Input Simulation Pipeline
 from SimulationPipeline import *
+from useful_fns import *
 
 # Now Import our data from our data folder:
 
 # Get all csv filenames in a folder
 all_files = glob.glob("do-not-track/*.csv")
 #all_files
-
-def par_extract(file):
-    # Extracts the characters between square brackets.
-    s_filter = ""
-    x = False
-    for i in file:
-        if i == "[": x = True
-        elif i == "]": x = False
-        elif x: s_filter += i
-
-    return s_filter
 
 # Get Scorr csv filenames in a folder
 Scorr_files = glob.glob("do-not-track/R_LCycle*Scorr*.csv")
@@ -67,10 +57,6 @@ print(numpy.where(FCFC==np.amax(FCFC)))
 # print(Scorr_files)
 
 # Sort it:
-def sorter(X,Y):
-    Z = [x for _,x in sorted(zip(Y,X))]
-    return Z
-
 SCFC = sorter(SCFC,G_value)
 FCFC = sorter(FCFC,G_value)
 G_value = sorted(G_value)
