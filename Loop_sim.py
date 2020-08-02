@@ -88,11 +88,10 @@ ParamsDict["MODEL_c_ee"] = np.array([11.0])
 ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([1.0])
-ParamsDict["G"] = np.array([i*0.1]) 
+ParamsDict["G"] = np.array([i*0.05]) 
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([2.8]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([65.0])) 
-ParamsDict["RandState"] = 1034
 ParamsDict["tag"] = "R_LCycle_G" + str(ParamsDict["G"]) 
 Simul_Pipeline(ParamsDict=ParamsDict)
 
