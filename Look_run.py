@@ -47,7 +47,7 @@ bold_data = df[1:]
 
 #plt.figure(num=None, figsize=(60, 30), dpi=80, facecolor='w', edgecolor='k')
 for tseries in bold_data:
-    plt.plot(bold_time[0:500],tseries[0:500])
+    plt.plot(bold_time[0:1000],tseries[0:1000])
 
 plt.xlabel('Time (ms)', fontsize=20)
 plt.ylabel('Amplitude (au)', fontsize=20)
