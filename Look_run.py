@@ -69,8 +69,33 @@ con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=1)
 
 if ParamsDict["BINARY"]==True:
     con.weights = con.weights!=0
+SCM = con.weights
 
-current_calculator(bold_data,ParamsDict["G"],con.weights)
+# External Current Calculator:
+J_e = []
+#len(bold_time)
+for j in np.arange(1000):       
+    t_0 = []
+    # Specific column (or time point)
+    for i in np.arange(SCM.shape[0]): 
+        # Sum over all external currents (May need to do SCM[:,i] instead)  
+        t  = sum(bold_data[:,j]*SCM[i])
+        # To obtain currents to particular region
+        t_0.append(t)
+    J_e.append(t_0)
+
+J_e = np.array(J_e)
+print("Max",np.max(J_e))
+print("Median",np.median(J_e))
+print("Min",np.min(J_e))
+
+plt.plot(J_e)
+plt.xlabel('Time (ms)', fontsize=20)
+plt.ylabel('External Current (au)', fontsize=20)
+plt.title('External Current', fontsize=20)
+#plt.legend(('0','1','2','3','4'))
+plt.legend(range(38))
+plt.show()
 
 Scorra = np.genfromtxt(Sim_run_files[-2])
 print(Scorra)
