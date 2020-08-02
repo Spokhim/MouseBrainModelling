@@ -26,6 +26,10 @@ from useful_fns import *
 
 # Empty dict
 ParamsDict = { }
+ParamsDict["name"] = "MouseCortex"
+ParamsDict["G"] = np.array([1.9]) 
+ParamsDict["REMOVE"] = [7]
+ParamsDict["BINARY"]=True
 
 # Ye dunno why having the closing square bracket messes up glob glob. 
 Sim_run_files = glob.glob("do-not-track/R_LCycle_G[1.9*_.csv")
@@ -51,6 +55,9 @@ plt.title('Simulated timeseries', fontsize=20)
 #plt.legend(('0','1','2','3','4'))
 plt.legend(range(38))
 plt.show()
+
+# Get rough feel for external currents.
+current_calculator(bold_data,ParamsDict["G"],con.weights)
 
 Scorra = np.genfromtxt(Sim_run_files[-2])
 print(Scorra)
