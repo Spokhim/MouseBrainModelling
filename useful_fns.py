@@ -37,7 +37,22 @@ def sorter(X,Y):
     Z = [x for _,x in sorted(zip(Y,X))]
     return Z
 
-# Need a params extractor function.
+def params_extractor(file):
+    """[summary]
+
+    Parameters
+    ----------
+    file : csv file
+        File contianing the parameters and their values.
+
+    Returns
+    -------
+    dict
+        ParamsDict contains the parameters and their values in the form of a dictionary.
+    """
+
+
+    return ParamsDict
 
 def current_calculator(V,G,SCM):
     """
@@ -95,38 +110,3 @@ def current_calculator(V,G,SCM):
     # This returns as a tuple!  Oooh! (not a list)
     return J_med,J_min,J_max
 
-'''
-# Empty dict
-ParamsDict = { }
-ParamsDict["name"] = "MouseCortex"
-ParamsDict["G"] = np.array([1.9]) 
-ParamsDict["REMOVE"] = [7]
-ParamsDict["BINARY"]=True
-
-# Ye dunno why having the closing square bracket messes up glob glob. 
-Sim_run_files = glob.glob("do-not-track/R_LCycle_G[0.4*_.csv")
-print(Sim_run_files)
-
-# Read file import data
-#df = pd.read_csv(all_files[11],delimiter="\t",header=None)
-# Genfromtxt gives us a np array. 
-df = np.genfromtxt(Sim_run_files[-1],delimiter="\t")
-
-bold_time = df[0]
-bold_data = df[1:]
-
-# Load the connectivity data from a zip file. 
-con = connectivity.Connectivity.from_file(os.getcwd() +"/Connectomes/" + ParamsDict["name"] + ".zip")
-
-# Remove the ith row and column in centres, tract_lengths and weights. i.e. the specified region(s)
-con.centres = np.delete(con.centres,ParamsDict["REMOVE"])
-con.weights = np.delete(con.weights,obj=ParamsDict["REMOVE"],axis=0)
-con.weights = np.delete(con.weights,obj=ParamsDict["REMOVE"],axis=1)
-con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=0)
-con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=1)
-
-if ParamsDict["BINARY"]==True:
-    con.weights = con.weights!=0
-
-current_calculator(bold_data,ParamsDict["G"],con.weights)
-'''

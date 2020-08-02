@@ -26,12 +26,8 @@ from useful_fns import *
 
 # Now Import our data from our data folder:
 
-# Get all csv filenames in a folder
-all_files = glob.glob("do-not-track/*.csv")
-#all_files
-
 # Get Scorr csv filenames in a folder
-Scorr_files = glob.glob("do-not-track/R_LCycle*Scorr*.csv")
+Scorr_files = glob.glob("do-not-track/LCycle*Scorr*.csv")
 
 SCFC = []
 FCFC = []

@@ -32,7 +32,7 @@ ParamsDict["REMOVE"] = [7]
 ParamsDict["BINARY"]=True
 
 # Ye dunno why having the closing square bracket messes up glob glob. 
-Sim_run_files = glob.glob("do-not-track/R_LCycle_G[1.9*_.csv")
+Sim_run_files = glob.glob("do-not-track/LCycle_G[0.7*_.csv")
 print(Sim_run_files)
 
 # Read file import data
@@ -57,6 +57,19 @@ plt.legend(range(38))
 plt.show()
 
 # Get rough feel for external currents.
+# Load the connectivity data from a zip file. 
+con = connectivity.Connectivity.from_file(os.getcwd() +"/Connectomes/" + ParamsDict["name"] + ".zip")
+
+# Remove the ith row and column in centres, tract_lengths and weights. i.e. the specified region(s)
+con.centres = np.delete(con.centres,ParamsDict["REMOVE"])
+con.weights = np.delete(con.weights,obj=ParamsDict["REMOVE"],axis=0)
+con.weights = np.delete(con.weights,obj=ParamsDict["REMOVE"],axis=1)
+con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=0)
+con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=1)
+
+if ParamsDict["BINARY"]==True:
+    con.weights = con.weights!=0
+
 current_calculator(bold_data,ParamsDict["G"],con.weights)
 
 Scorra = np.genfromtxt(Sim_run_files[-2])
