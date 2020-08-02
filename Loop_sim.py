@@ -20,7 +20,7 @@ from tvb.simulator.plot.tools import *
 
 # Input Simulation Pipeline
 from SimulationPipeline import *
-from useful_fns import *
+#from useful_fns import *
 
 ################################################################################################################################
 # These are Default Values for ParamsDict.  
@@ -92,7 +92,7 @@ ParamsDict["G"] = np.array([i*0.05])
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                         a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "R_LCycle_G" + str(ParamsDict["G"]) 
+ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) 
 Simul_Pipeline(ParamsDict=ParamsDict)
 
 '''
