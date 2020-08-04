@@ -89,52 +89,39 @@ ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([1.0])
 ParamsDict["G"] = np.array([i*0.05]) 
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                        tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
 
-'''
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
 E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
 
-# E_normalised is -0.88 to 0.58
+# E_normalised is (no longer) -0.88 to 0.58
 E_normalised = (E_pop-E_mean)/E_mean
-# I_normalised is - 0.48 to 2.28
+# I_normalised is (no longer) - 0.48 to 2.28
 I_normalised = (I_pop-I_mean)/I_mean
-# Sigma
-sigma = i*0.2 
+
 # Homogeneous Coupling constants
 h_ee = ParamsDict["MODEL_c_ee"] 
 h_ei = ParamsDict["MODEL_c_ei"] 
 h_ie = ParamsDict["MODEL_c_ie"] 
 h_ii = ParamsDict["MODEL_c_ii"] 
 
-# Heterogeneous Coupling Constants (array)
-ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
-ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
-ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
-ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+# Sigma
 
-ParamsDict["G"] = np.array([0.5]) 
-ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
-Simul_Pipeline(ParamsDict=ParamsDict)
+for j in np.arange(5):
+    sigma = j*0.2 
 
-ParamsDict["G"] = np.array([0.8]) 
-ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
-Simul_Pipeline(ParamsDict=ParamsDict)
+    # Heterogeneous Coupling Constants (array)
+    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
 
-ParamsDict["G"] = np.array([1.1]) 
-ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-ParamsDict["G"] = np.array([1.4]) 
-ParamsDict["tag"] = "G" + str(ParamsDict["G"]) + "Sig[" + str(sigma) + "]"
-Simul_Pipeline(ParamsDict=ParamsDict)
-'''
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([65.0])) 
+    ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) 
+    Simul_Pipeline(ParamsDict=ParamsDict)
 
 print("Happilly Finished All!")
