@@ -79,7 +79,7 @@ for j in np.arange(1000):
     # Specific column (or time point)
     for i in np.arange(SCM.shape[0]): 
         # Sum over all external currents (May need to do SCM[:,i] instead)  
-        t  = sum(bold_data[:,j]*SCM[i])
+        t  = sum(bold_data[:,j]*SCM[:,i])
         # To obtain currents to particular region
         t_0.append(t)
     J_e.append(t_0)
