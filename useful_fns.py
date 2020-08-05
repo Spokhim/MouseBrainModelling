@@ -36,6 +36,30 @@ def sorter(X,Y):
     # Sort X based on Y
     Z = [x for _,x in sorted(zip(Y,X))]
     return Z
+    
+def SCFC_sort(Scorr_files):
+    # Sorts SC & FC based on G value. 
+    # Input is a list of SCorr Filenames
+    # Outputs G Value, SCFC, FCFC.
+
+    SCFC = []
+    FCFC = []
+    G_value = []
+
+    # Loop to populate the empty array with the numbers from the Scorr csv files:
+
+    for item in Scorr_files:
+        a = np.genfromtxt(item)
+        SCFC.append(a[0])
+        FCFC.append(a[2])
+        G_value.append(par_extract(item))
+
+    # Sort it:
+    SCFC = sorter(SCFC,G_value)
+    FCFC = sorter(FCFC,G_value)
+    G_value = sorted(G_value)
+
+    return G_value, SCFC, FCFC
 
 def params_extractor(file):
     """[summary]
