@@ -30,6 +30,8 @@ def Simul_Pipeline(ParamsDict):
     # Load the connectivity data from a zip file. 
     con = connectivity.Connectivity.from_file(os.getcwd() +"/Connectomes/" + ParamsDict["name"] + ".zip")
 
+    # Now need to prepare the connectivity data accordingly.  Unfortuantely doesn't load eveyrthing in properly. May need to adjust con.undirected in future.
+
     # Remove the ith row and column in centres, tract_lengths and weights. i.e. the specified region(s)
     con.centres = np.delete(con.centres,ParamsDict["REMOVE"])
     con.weights = np.delete(con.weights,obj=ParamsDict["REMOVE"],axis=0)
@@ -37,6 +39,8 @@ def Simul_Pipeline(ParamsDict):
     con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=0)
     con.tract_lengths = np.delete(con.tract_lengths,obj=ParamsDict["REMOVE"],axis=1)
 
+    # Number of regions
+    con.number_of_regions = con.weights.shape[0]
 
     # Change to Connectome to Binary if desired:
     if ParamsDict["BINARY"]==True:
@@ -52,7 +56,7 @@ def Simul_Pipeline(ParamsDict):
                                 monitors=(monitors.Bold(period=1e3),
                                         monitors.TemporalAverage(period=1e3)),
                                 simulation_length=ParamsDict["Simul_length"],
-                                #initial_conditions=[1.8,1.8,1.8,1.8,1.8]
+                                #initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1)),
                                 ).configure()
         # Run the resting state simulation
         (bold_time, bold_data), _ = sim.run()
@@ -65,7 +69,9 @@ def Simul_Pipeline(ParamsDict):
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
                                 integrator=integrators.EulerStochastic(dt=ParamsDict["dt"],noise=noise.Additive(nsig=ParamsDict["noise"],
                                                 random_stream=np.random.RandomState(ParamsDict["RandState"]))),
-                                simulation_length=ParamsDict["Simul_length"]).configure()
+                                simulation_length=ParamsDict["Simul_length"],
+                                #initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1)),
+                                ).configure()
         # Run the resting state simulation
         awer = sim.run()
         bold_time = awer[0][0]
