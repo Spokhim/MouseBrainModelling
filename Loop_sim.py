@@ -109,19 +109,19 @@ h_ii = ParamsDict["MODEL_c_ii"]
 
 # Sigma
 
-for j in np.arange(5):
-    sigma = j*0.2 
+sigma = 5*0.2 
+ParamsDict["sigma"] = 1
 
-    # Heterogeneous Coupling Constants (array)
-    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
-    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
-    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
-    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+# Heterogeneous Coupling Constants (array)
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
 
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                        tau_i=numpy.array([65.0])) 
-    ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) 
-    Simul_Pipeline(ParamsDict=ParamsDict)
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) 
+Simul_Pipeline(ParamsDict=ParamsDict)
 
 print("Happilly Finished All!")

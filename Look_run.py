@@ -27,12 +27,12 @@ from useful_fns import *
 # Empty dict
 ParamsDict = { }
 ParamsDict["name"] = "MouseCortex"
-ParamsDict["G"] = np.array([1.9]) 
+#ParamsDict["G"] = np.array([1.9]) 
 ParamsDict["REMOVE"] = [7]
 ParamsDict["BINARY"]=True
 
 # Ye dunno why having the closing square bracket messes up glob glob. 
-Sim_run_files = glob.glob("do-not-track/LCycle_G[0.7*_.csv")
+Sim_run_files = glob.glob("do-not-track/LCycle_G[0.75*_.csv")
 print(Sim_run_files)
 
 # Read file import data
