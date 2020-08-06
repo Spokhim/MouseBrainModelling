@@ -96,10 +96,12 @@ I_pop = df.inhibitory.values
 E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
 
-# E_normalised is (no longer) -0.88 to 0.58
+# E_normalised is (when excluding region 7) -0.28 to 0.54
 E_normalised = (E_pop-E_mean)/E_mean
-# I_normalised is (no longer) - 0.48 to 2.28
+# I_normalised is (when excluding region 7) -0.45 to 1.44
 I_normalised = (I_pop-I_mean)/I_mean
+
+
 
 # Homogeneous Coupling constants
 h_ee = ParamsDict["MODEL_c_ee"] 
