@@ -62,7 +62,7 @@ ParamsDict["dt"] = 0.1
 # Set Additive Noise strength
 ParamsDict["noise"] = np.array([0.000013])
 
-# Set Wilson Cowan Model Parameters
+# Set Wilson Cowan Model Parameters - Hysteresis
 ParamsDict["MODEL_c_ee"] = np.array([16.0])
 ParamsDict["MODEL_c_ei"] = np.array([12.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
@@ -97,11 +97,9 @@ E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
 
 # E_normalised is (when excluding region 7) -0.28 to 0.54
-E_normalised = (E_pop-E_mean)/E_mean
+E_norm = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
-I_normalised = (I_pop-I_mean)/I_mean
-
-
+I_norm = (I_pop-I_mean)/I_mean
 
 # Homogeneous Coupling constants
 h_ee = ParamsDict["MODEL_c_ee"] 
@@ -110,9 +108,13 @@ h_ie = ParamsDict["MODEL_c_ie"]
 h_ii = ParamsDict["MODEL_c_ii"] 
 
 # Sigma
+ParamsDict["sigma"] = 0.2
+sigma = ParamsDict["sigma"] 
+###################################################################################################################################################
 
-sigma = 5*0.2 
-ParamsDict["sigma"] = 1
+# Shuffled:
+E_normalised = numpy.random.permutation(E_norm)
+I_normalised = numpy.random.permutation(I_norm)
 
 # Heterogeneous Coupling Constants (array)
 ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
@@ -123,7 +125,43 @@ ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised)
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                     a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                     tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) 
+ParamsDict["tag"] = "Shuffle_LCycle_G" + str(ParamsDict["G"]) 
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+###################################################################################################################################################
+
+# Rotated by 3 :
+E_normalised = numpy.concatenate([E_norm[3:] , E_norm[:3] ])
+I_normalised = numpy.concatenate([I_norm[3:] , I_norm[:3] ])
+
+# Heterogeneous Coupling Constants (array)
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "Rot3_LCycle_G" + str(ParamsDict["G"]) 
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+###################################################################################################################################################
+
+# Shuffled:
+E_normalised = numpy.linspace(start=-0.28,stop=0.54,num=37)
+I_normalised = numpy.linspace(start=-0.45,stop=1.44,num=37)
+
+# Heterogeneous Coupling Constants (array)
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "Grad_LCycle_G" + str(ParamsDict["G"]) 
 Simul_Pipeline(ParamsDict=ParamsDict)
 
 print("Happilly Finished All!")
