@@ -107,61 +107,24 @@ h_ei = ParamsDict["MODEL_c_ei"]
 h_ie = ParamsDict["MODEL_c_ie"] 
 h_ii = ParamsDict["MODEL_c_ii"] 
 
+# Rotated by 5 :
+E_normalised = numpy.concatenate([E_norm[5:] , E_norm[:5] ])
+I_normalised = numpy.concatenate([I_norm[5:] , I_norm[:5] ])
+
 # Sigma
-ParamsDict["sigma"] = 0.2
-sigma = ParamsDict["sigma"] 
-###################################################################################################################################################
 
-# Shuffled:
-E_normalised = numpy.random.permutation(E_norm)
-I_normalised = numpy.random.permutation(I_norm)
+for J in np.arange(6):
+    ParamsDict["sigma"] =J*0.2
+    sigma = ParamsDict["sigma"] 
 
-# Heterogeneous Coupling Constants (array)
-ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
-ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
-ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
-ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+    # Heterogeneous Coupling Constants (array)
+    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
 
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "Shuffle_LCycle_G" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-###################################################################################################################################################
-
-# Rotated by 3 :
-E_normalised = numpy.concatenate([E_norm[3:] , E_norm[:3] ])
-I_normalised = numpy.concatenate([I_norm[3:] , I_norm[:3] ])
-
-# Heterogeneous Coupling Constants (array)
-ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
-ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
-ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
-ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
-
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "Rot3_LCycle_G" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-###################################################################################################################################################
-
-# Shuffled:
-E_normalised = numpy.linspace(start=-0.28,stop=0.54,num=37)
-I_normalised = numpy.linspace(start=-0.45,stop=1.44,num=37)
-
-# Heterogeneous Coupling Constants (array)
-ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
-ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
-ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
-ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
-
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "Grad_LCycle_G" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-print("Happilly Finished All!")
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([65.0])) 
+    ParamsDict["tag"] = "Rot5_LCycle_G" + str(ParamsDict["G"]) 
+    Simul_Pipeline(ParamsDict=ParamsDict)
