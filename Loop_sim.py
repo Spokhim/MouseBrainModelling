@@ -35,7 +35,7 @@ ParamsDict["name"] = "MouseCortex"
 ParamsDict["FCFC"] = True
 
 # Export Simulation Files?
-ParamsDict["ExportSim"] = True:
+ParamsDict["ExportSim"] = True
 
 # Monitors or not?  (Aka BOLD or not?)
 ParamsDict["BOLD"] = False
