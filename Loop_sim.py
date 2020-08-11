@@ -34,6 +34,9 @@ ParamsDict["name"] = "MouseCortex"
 # Calculate FC-FC for Mouse?
 ParamsDict["FCFC"] = True
 
+# Export Simulation Files?
+ParamsDict["ExportSim"] == True:
+
 # Monitors or not?  (Aka BOLD or not?)
 ParamsDict["BOLD"] = False
 
