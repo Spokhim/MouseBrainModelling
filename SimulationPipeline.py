@@ -165,5 +165,5 @@ def Simul_Pipeline(ParamsDict):
         np.savetxt("do-not-track/" + date + ParamsDict["tag"] + "_" + ParamsDict["name"]  + "_FCM_" + time_now + "_.csv", FCM, delimiter = "\t")
         np.savetxt("do-not-track/" + date + ParamsDict["tag"] + "_" + ParamsDict["name"]  + "_Scorr_" +  time_now + "_.csv", Scorr, delimiter = "\t")  
 
-    return
+    return Scorr
 
