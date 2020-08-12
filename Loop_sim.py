@@ -86,7 +86,7 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 i = int(sys.argv[1])
 
-ParamsDict["G"] = np.array([i*0.05]) 
+ParamsDict["G"] = np.array([i*0.1]) 
 
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
