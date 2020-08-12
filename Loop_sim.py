@@ -95,9 +95,9 @@ E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
 
 # E_normalised is (when excluding region 7) -0.28 to 0.54
-E_normalised = (E_pop-E_mean)/E_mean
+E_normalised = -(E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
-I_normalised = (I_pop-I_mean)/I_mean
+I_normalised = -(I_pop-I_mean)/I_mean
 
 # Set Wilson Cowan Model Parameters - Hysteresis
 ParamsDict["MODEL_c_ee"] = np.array([16.0])
