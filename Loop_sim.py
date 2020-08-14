@@ -86,7 +86,7 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 i = int(sys.argv[1])
 
-ParamsDict["G"] = np.array([i*0.1]) 
+ParamsDict["G"] = np.array([i*0.05]) 
 
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
@@ -99,6 +99,7 @@ E_normalised = -(E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
 I_normalised = -(I_pop-I_mean)/I_mean
 
+"""
 # Set Wilson Cowan Model Parameters - Hysteresis
 ParamsDict["MODEL_c_ee"] = np.array([16.0])
 ParamsDict["MODEL_c_ei"] = np.array([12.0])
@@ -164,10 +165,17 @@ ParamsDict["MODEL_c_ee"] = np.array([11.0])
 ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([1.0])
-ParamsDict["G"] = np.array([0]) 
+
+# Homogeneous Coupling constants
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
+
+# See if I can get away with shorter Simulation Length.
+ParamsDict["Simul_length"] = 1.2e4
 
 # Sigma
-
 for J in np.arange(6):
     ParamsDict["sigma"] =J*0.2
     sigma = ParamsDict["sigma"] 
@@ -181,7 +189,24 @@ for J in np.arange(6):
     ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                         a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([65.0])) 
-    ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) 
+    ParamsDict["tag"] = "Shorter_LCycle_G" + str(ParamsDict["G"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
 
-"""
+# See if I can get away with shortest Simulation Length.
+ParamsDict["Simul_length"] = 1.2e3
+# Sigma
+for J in np.arange(6):
+    ParamsDict["sigma"] =J*0.2
+    sigma = ParamsDict["sigma"] 
+
+    # Heterogeneous Coupling Constants (array)
+    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([65.0])) 
+    ParamsDict["tag"] = "Shortest_LCycle_G" + str(ParamsDict["G"]) 
+    Simul_Pipeline(ParamsDict=ParamsDict)

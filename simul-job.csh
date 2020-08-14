@@ -11,7 +11,7 @@
 #PBS -V
 
 # -J Specifies Job Array with Indices 
-#PBS -J 0-20
+#PBS -J 0-40
 
 # Show the host on which the job ran
 hostname
