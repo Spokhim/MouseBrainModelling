@@ -94,6 +94,12 @@ ParamsDict["Simul_length"] = 1.2e4
 # Let's Pause by X seconds to make sure the random stuff is working and different across the parallel cpus (based on  sys time after all)
 time.sleep(i*0.1)
 
+df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
+E_pop = df.excitatory.values
+I_pop = df.inhibitory.values
+E_mean = np.mean(E_pop)
+I_mean = np.mean(I_pop)
+
 # E_normalised is (when excluding region 7) -0.28 to 0.54
 E_norm = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
@@ -108,6 +114,11 @@ ParamsDict["MODEL_c_ee"] = np.array([11.0])
 ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([1.0])
+# Homogeneous Coupling constants
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
 
 Best_Score = 0 
 Best_G = 0
@@ -116,8 +127,8 @@ Best_Sigma = 0
 # Sweep across the range of Sigma values:
 for I in np.arange(6):
 
-    ParamsDict["sigma"] =I*0.2
-    sigma = ParamsDict["sigma"] 
+    ParamsDict["Sigma"] =I*0.2
+    sigma = ParamsDict["Sigma"] 
 
     # Heterogeneous Coupling Constants (array)
     ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
@@ -128,7 +139,7 @@ for I in np.arange(6):
     
     # Sweep across the range of G values
     for J in np.arange(41):
-        ParamsDict["G"] = J * 0.05
+        ParamsDict["G"] = np.array([J * 0.05])
 
         ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                             a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
