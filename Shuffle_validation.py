@@ -157,5 +157,5 @@ for I in np.arange(6):
 
 # Now export the information:
 time_now = time.strftime("%Y%m%d-%H%M%S")
-np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"] + "_Best_" + time_now + "_.csv", [Best_Score,Best_G,Best_Sigma], delimiter="\t")
-np.savetxt("do-not-track/" + ParamsDict["tag"] + "_" + ParamsDict["name"] + "_EIHet_" + time_now + "_.csv", [E_normalised,I_normalised], delimiter="\t")
+np.savetxt("do-not-track/" + str(i) + "_" + ParamsDict["name"] + "_Best_" + time_now + "_.csv", [Best_Score,Best_G,Best_Sigma], delimiter="\t")
+np.savetxt("do-not-track/" + str(i) + "_" + ParamsDict["name"] + "_EIHet_" + time_now + "_.csv", [E_normalised,I_normalised], delimiter="\t")
