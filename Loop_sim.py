@@ -95,9 +95,9 @@ E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
 
 # E_normalised is (when excluding region 7) -0.28 to 0.54
-E_normalised = -(E_pop-E_mean)/E_mean
+E_normalised = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
-I_normalised = -(I_pop-I_mean)/I_mean
+I_normalised = (I_pop-I_mean)/I_mean
 
 """
 # Set Wilson Cowan Model Parameters - Hysteresis
@@ -189,7 +189,7 @@ for J in np.arange(6):
     ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                         a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([65.0])) 
-    ParamsDict["tag"] = "Shorter_LCycle_G" + str(ParamsDict["G"]) 
+    ParamsDict["tag"] = "Correct_Shorter_LCycle_G" + str(ParamsDict["G"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
 
 # See if I can get away with shortest Simulation Length.
@@ -208,5 +208,5 @@ for J in np.arange(6):
     ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                         a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([65.0])) 
-    ParamsDict["tag"] = "Shortest_LCycle_G" + str(ParamsDict["G"]) 
+    ParamsDict["tag"] = "Correct_Shortest_LCycle_G" + str(ParamsDict["G"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
