@@ -106,8 +106,9 @@ E_norm = (E_pop-E_mean)/E_mean
 I_norm = (I_pop-I_mean)/I_mean
 
 # Shuffled:
-E_normalised = numpy.random.permutation(E_norm)
-I_normalised = numpy.random.permutation(I_norm)
+perm = numpy.random.permutation(len(E_norm))
+E_normalised = E_norm[perm]
+I_normalised = I_norm[perm]
 
 # Limit Cycle Params
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
