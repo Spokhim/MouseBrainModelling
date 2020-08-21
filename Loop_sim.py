@@ -99,6 +99,64 @@ E_normalised = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
 I_normalised = (I_pop-I_mean)/I_mean
 
+# Set Wilson Cowan Model Parameters - LCycleH - LCycle Parameters close to Hysteresis Case. 
+ParamsDict["MODEL_c_ee"] = np.array([16.0])
+ParamsDict["MODEL_c_ei"] = np.array([12.0])
+ParamsDict["MODEL_c_ie"] = np.array([15.0])
+ParamsDict["MODEL_c_ii"] = np.array([3.0])
+
+# Homogeneous Coupling constants
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
+
+for J in np.arange(6):
+    ParamsDict["sigma"] =J*0.2
+    sigma = ParamsDict["sigma"] 
+
+    # Heterogeneous Coupling Constants (array)
+    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([4]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([10.0])) 
+    ParamsDict["tag"] = "LCycleH_G" + str(ParamsDict["G"]) 
+    Simul_Pipeline(ParamsDict=ParamsDict)
+
+# Set Wilson Cowan Model Parameters - LCycleHCut - LCycleCut Parameters close to Hysteresis Case, but chopped so hopf bifurcation.
+ParamsDict["MODEL_c_ee"] = np.array([16.0])
+ParamsDict["MODEL_c_ei"] = np.array([12.0])
+ParamsDict["MODEL_c_ie"] = np.array([15.0])
+ParamsDict["MODEL_c_ii"] = np.array([3.0])
+
+# Homogeneous Coupling constants
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
+
+for J in np.arange(6):
+    ParamsDict["sigma"] =J*0.2
+    sigma = ParamsDict["sigma"] 
+
+    # Heterogeneous Coupling Constants (array)
+    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([3]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([10.0])) 
+    ParamsDict["tag"] = "LCycleH_G" + str(ParamsDict["G"]) 
+    Simul_Pipeline(ParamsDict=ParamsDict)
+
+
+"""
 # Set Wilson Cowan Model Parameters - Hysteresis
 ParamsDict["MODEL_c_ee"] = np.array([16.0])
 ParamsDict["MODEL_c_ei"] = np.array([12.0])
@@ -128,7 +186,6 @@ for J in np.arange(6):
     ParamsDict["tag"] = "Hysteresis_G" + str(ParamsDict["G"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
 
-"""
 # FixedPt-eqbm
 
 # Set Wilson Cowan Model Parameters - Hysteresis
