@@ -65,6 +65,9 @@ ParamsDict["dt"] = 0.1
 # Set Additive Noise strength
 ParamsDict["noise"] = np.array([0.000013])
 
+# Set Initial Conditions.  False means use the default TVB Initial Conditions function to make some for you.
+ParamsDict["Init_Cons"] = False
+
 # Set Wilson Cowan Model Parameters - Hysteresis
 ParamsDict["MODEL_c_ee"] = np.array([16.0])
 ParamsDict["MODEL_c_ei"] = np.array([12.0])

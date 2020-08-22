@@ -47,7 +47,9 @@ def Simul_Pipeline(ParamsDict):
         con.weights = con.weights!=0
 
     # Set the parameter of the resting state simulation
-    if ParamsDict["BOLD"] == True:
+
+    # Bold Simulation, Initial Conditions Not Provided
+    if (ParamsDict["BOLD"] == True and ParamsDict["Init_Cons"] == False):
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
                                 connectivity=con,
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
@@ -61,9 +63,23 @@ def Simul_Pipeline(ParamsDict):
         # Run the resting state simulation
         (bold_time, bold_data), _ = sim.run()
 
-    # No Monitors 
-    else:
+    # Bold Simulation, Initial Conditions Provided
+    else if (ParamsDict["BOLD"] == True and ParamsDict["Init_Cons"] != False):
+        sim = simulator.Simulator(model=ParamsDict["MODEL"],
+                                connectivity=con,
+                                coupling=coupling.Linear(a=ParamsDict["G"]),
+                                integrator=integrators.EulerStochastic(dt=ParamsDict["dt"],noise=noise.Additive(nsig=ParamsDict["noise"],
+                                            random_stream=np.random.RandomState(ParamsDict["RandState"]))),
+                                monitors=(monitors.Bold(period=1e3),
+                                        monitors.TemporalAverage(period=1e3)),
+                                simulation_length=ParamsDict["Simul_length"],
+                                initial_conditions=ParamsDict["Init_Cons"],
+                                ).configure()
+        # Run the resting state simulation
+        (bold_time, bold_data), _ = sim.run()
 
+    # No Monitors, Initial Conditions Not Provided
+    else if (ParamsDict["BOLD"] == False and ParamsDict["Init_Cons"] == False):
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
                                 connectivity=con,
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
@@ -76,6 +92,22 @@ def Simul_Pipeline(ParamsDict):
         awer = sim.run()
         bold_time = awer[0][0]
         bold_data = awer[0][1]
+
+    # No Monitors, Initial Conditions Provided
+    else:
+        sim = simulator.Simulator(model=ParamsDict["MODEL"],
+                                connectivity=con,
+                                coupling=coupling.Linear(a=ParamsDict["G"]),
+                                integrator=integrators.EulerStochastic(dt=ParamsDict["dt"],noise=noise.Additive(nsig=ParamsDict["noise"],
+                                                random_stream=np.random.RandomState(ParamsDict["RandState"]))),
+                                simulation_length=ParamsDict["Simul_length"],
+                                initial_conditions=ParamsDict["Init_Cons"],
+                                ).configure()
+        # Run the resting state simulation
+        awer = sim.run()
+        bold_time = awer[0][0]
+        bold_data = awer[0][1]
+
 
     # Got lazy
     Snip = ParamsDict["Snip"]
