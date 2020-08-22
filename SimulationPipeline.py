@@ -49,7 +49,7 @@ def Simul_Pipeline(ParamsDict):
     # Set the parameter of the resting state simulation
 
     # Bold Simulation, Initial Conditions Provided
-    if (ParamsDict["BOLD"] == True and any(ParamsDict["Init_Cons"]) ):
+    if (ParamsDict["BOLD"] == True and "Init_Cons" in ParamsDict ):
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
                                 connectivity=con,
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
@@ -64,7 +64,7 @@ def Simul_Pipeline(ParamsDict):
         (bold_time, bold_data), _ = sim.run()
 
     # Bold Simulation, Initial Conditions Not Provided
-    elif (ParamsDict["BOLD"] == True):
+    elif (ParamsDict["BOLD"] == True and "Init_Cons" not in ParamsDict ):
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
                                 connectivity=con,
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
@@ -79,7 +79,7 @@ def Simul_Pipeline(ParamsDict):
         (bold_time, bold_data), _ = sim.run()
 
     # No Monitors, Initial Conditions Provided
-    elif (ParamsDict["BOLD"] == False and any(ParamsDict["Init_Cons"]) ):
+    elif (ParamsDict["BOLD"] == False and "Init_Cons" in ParamsDict ):
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
                                 connectivity=con,
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
