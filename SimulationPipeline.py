@@ -48,23 +48,8 @@ def Simul_Pipeline(ParamsDict):
 
     # Set the parameter of the resting state simulation
 
-    # Bold Simulation, Initial Conditions Not Provided
-    if (ParamsDict["BOLD"] == True and ParamsDict["Init_Cons"] == False):
-        sim = simulator.Simulator(model=ParamsDict["MODEL"],
-                                connectivity=con,
-                                coupling=coupling.Linear(a=ParamsDict["G"]),
-                                integrator=integrators.EulerStochastic(dt=ParamsDict["dt"],noise=noise.Additive(nsig=ParamsDict["noise"],
-                                            random_stream=np.random.RandomState(ParamsDict["RandState"]))),
-                                monitors=(monitors.Bold(period=1e3),
-                                        monitors.TemporalAverage(period=1e3)),
-                                simulation_length=ParamsDict["Simul_length"],
-                                #initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1)),
-                                ).configure()
-        # Run the resting state simulation
-        (bold_time, bold_data), _ = sim.run()
-
     # Bold Simulation, Initial Conditions Provided
-    elif (ParamsDict["BOLD"] == True and ParamsDict["Init_Cons"] != False):
+    if (ParamsDict["BOLD"] == True and any(ParamsDict["Init_Cons"]) ):
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
                                 connectivity=con,
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
@@ -78,22 +63,37 @@ def Simul_Pipeline(ParamsDict):
         # Run the resting state simulation
         (bold_time, bold_data), _ = sim.run()
 
-    # No Monitors, Initial Conditions Not Provided
-    elif (ParamsDict["BOLD"] == False and ParamsDict["Init_Cons"] == False):
+    # Bold Simulation, Initial Conditions Not Provided
+    elif (ParamsDict["BOLD"] == True):
+        sim = simulator.Simulator(model=ParamsDict["MODEL"],
+                                connectivity=con,
+                                coupling=coupling.Linear(a=ParamsDict["G"]),
+                                integrator=integrators.EulerStochastic(dt=ParamsDict["dt"],noise=noise.Additive(nsig=ParamsDict["noise"],
+                                            random_stream=np.random.RandomState(ParamsDict["RandState"]))),
+                                monitors=(monitors.Bold(period=1e3),
+                                        monitors.TemporalAverage(period=1e3)),
+                                simulation_length=ParamsDict["Simul_length"],
+                                #initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1)),                                
+                                ).configure()
+        # Run the resting state simulation
+        (bold_time, bold_data), _ = sim.run()
+
+    # No Monitors, Initial Conditions Provided
+    elif (ParamsDict["BOLD"] == False and any(ParamsDict["Init_Cons"]) ):
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
                                 connectivity=con,
                                 coupling=coupling.Linear(a=ParamsDict["G"]),
                                 integrator=integrators.EulerStochastic(dt=ParamsDict["dt"],noise=noise.Additive(nsig=ParamsDict["noise"],
                                                 random_stream=np.random.RandomState(ParamsDict["RandState"]))),
                                 simulation_length=ParamsDict["Simul_length"],
-                                #initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1)),
+                                initial_conditions=ParamsDict["Init_Cons"],
                                 ).configure()
         # Run the resting state simulation
         awer = sim.run()
         bold_time = awer[0][0]
         bold_data = awer[0][1]
 
-    # No Monitors, Initial Conditions Provided
+    # No Monitors, Initial Conditions Not Provided
     else:
         sim = simulator.Simulator(model=ParamsDict["MODEL"],
                                 connectivity=con,
@@ -102,6 +102,7 @@ def Simul_Pipeline(ParamsDict):
                                                 random_stream=np.random.RandomState(ParamsDict["RandState"]))),
                                 simulation_length=ParamsDict["Simul_length"],
                                 initial_conditions=ParamsDict["Init_Cons"],
+                                #initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1)),
                                 ).configure()
         # Run the resting state simulation
         awer = sim.run()
