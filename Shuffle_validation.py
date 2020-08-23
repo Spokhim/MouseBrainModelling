@@ -64,6 +64,10 @@ ParamsDict["dt"] = 0.1
 # Set Additive Noise strength
 ParamsDict["noise"] = np.array([0.000013])
 
+# Set Initial Conditions.  Comment out if you want TVB to make initial conditions for you.  Init_Cons CANT be in the Dict in this case.  
+#ParamsDict["Init_Cons"] = np.array()
+#initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1))
+
 # Set Wilson Cowan Model Parameters - Hysteresis
 ParamsDict["MODEL_c_ee"] = np.array([16.0])
 ParamsDict["MODEL_c_ei"] = np.array([12.0])
