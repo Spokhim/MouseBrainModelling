@@ -101,7 +101,6 @@ def Simul_Pipeline(ParamsDict):
                                 integrator=integrators.EulerStochastic(dt=ParamsDict["dt"],noise=noise.Additive(nsig=ParamsDict["noise"],
                                                 random_stream=np.random.RandomState(ParamsDict["RandState"]))),
                                 simulation_length=ParamsDict["Simul_length"],
-                                initial_conditions=ParamsDict["Init_Cons"],
                                 #initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1)),
                                 ).configure()
         # Run the resting state simulation
