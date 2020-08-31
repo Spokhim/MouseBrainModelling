@@ -31,8 +31,8 @@ ParamsDict["name"] = "MouseCortex"
 ParamsDict["REMOVE"] = [7]
 ParamsDict["BINARY"]=True
 
-# Ye dunno why having the closing square bracket messes up glob glob. 
-Sim_run_files = glob.glob("do-not-track/LCycle_G[0.75*_.csv")
+# Ye dunno why having the closing square bracket messes up glob glob. Need to do [[]   []]
+Sim_run_files = glob.glob("D:\\Simulations\\2020_08_23\\LCycleCut_InitCon_0.5*.csv")
 print(Sim_run_files)
 
 # Read file import data
