@@ -20,5 +20,5 @@ source ~/TVB/bin/activate.csh
 
 # Working directory is where I ran qsub
 cd "$PBS_O_WORKDIR"
-python Loop_sim.py 
+python Single_sim.py 
 exit
