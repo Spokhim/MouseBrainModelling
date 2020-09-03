@@ -69,26 +69,41 @@ ParamsDict["noise"] = np.array([0.000013])
 #ParamsDict["Init_Cons"] = np.array()
 #initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1))
 
-# Set Wilson Cowan Model Parameters - Hysteresis
-ParamsDict["MODEL_c_ee"] = np.array([16.0])
-ParamsDict["MODEL_c_ei"] = np.array([12.0])
+# Set Wilson Cowan Model Parameters - Limit Cycle Cut
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([3.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
 
 # Model is now defined within SimulationPipeline.py
 # However if you adjusting parameters other than these Coupling Parameters, then you need to redefine the model in this file per run.
 
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([4]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
-                                        tau_i=numpy.array([10.0])) 
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
 
 # Params Dict tag (extra note tags for the name - Example to denote what's being changed/looped.)
 ParamsDict["tag"] = ""
 
 ################################################################################################################################
 
-# Testing Initial Conditions
+# i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
+i = int(sys.argv[1])
 
+ParamsDict["G"] = np.array([i*0.05]) 
+
+df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
+E_pop = df.excitatory.values
+I_pop = df.inhibitory.values
+E_mean = np.mean(E_pop)
+I_mean = np.mean(I_pop)
+
+# E_normalised is (when excluding region 7) -0.28 to 0.54
+E_normalised = (E_pop-E_mean)/E_mean
+# I_normalised is (when excluding region 7) -0.45 to 1.44
+I_normalised = (I_pop-I_mean)/I_mean
+
+# Set Wilson Cowan Model Parameters - LCycleCut
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
 ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
@@ -100,65 +115,26 @@ h_ei = ParamsDict["MODEL_c_ei"]
 h_ie = ParamsDict["MODEL_c_ie"] 
 h_ii = ParamsDict["MODEL_c_ii"] 
 
-ParamsDict["G"] = np.array([0.75]) 
+for J in np.arange(6):
+    # Round is to get reid of the weird float thing that happens to make 0.6 0.6000000001
+    ParamsDict["sig_e"] = J*0.2
+    ParamsDict["sig_e"].round(decimals=1)
 
-ParamsDict["Init_Cons"] = 0.5 + numpy.zeros((37*37,2,37,1))
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycleCut_InitCon_0.5" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
+    for K in np.arange(6):
+        ParamsDict["sig_i"] = K*0.2
+        ParamsDict["sig_i"].round(decimals=1)
 
-ParamsDict["Init_Cons"] = 1 + numpy.zeros((37*37,2,37,1))
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycleCut_InitCon_1" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
+        # Heterogeneous Coupling Constants (array)
+        ParamsDict["MODEL_c_ie"] = h_ie  * (1 + ParamsDict["sig_e"] * E_normalised) 
+        ParamsDict["MODEL_c_ee"] = h_ee  * (1 + ParamsDict["sig_e"] * E_normalised) 
+        ParamsDict["MODEL_c_ii"] = h_ii  * (1 + ParamsDict["sig_i"] * I_normalised) 
+        ParamsDict["MODEL_c_ei"] = h_ei  * (1 + ParamsDict["sig_i"] * I_normalised) 
 
-ParamsDict["Init_Cons"] = numpy.zeros((37*37,2,37,1))
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycleCut_InitCon_0"
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-
-# Set Wilson Cowan Model Parameters - Hysteresis
-ParamsDict["MODEL_c_ee"] = np.array([16.0])
-ParamsDict["MODEL_c_ei"] = np.array([12.0])
-ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([3.0])
-
-# Homogeneous Coupling constants
-h_ee = ParamsDict["MODEL_c_ee"] 
-h_ei = ParamsDict["MODEL_c_ei"] 
-h_ie = ParamsDict["MODEL_c_ie"] 
-h_ii = ParamsDict["MODEL_c_ii"] 
-
-ParamsDict["G"] = np.array([0.55]) 
-# Hysteresis
-
-ParamsDict["Init_Cons"] = 0.5 + numpy.zeros((37*37,2,37,1))
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([4]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([10.0])) 
-ParamsDict["tag"] = "Hysteresis_InitCon_0.5" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-ParamsDict["Init_Cons"] = 1 + numpy.zeros((37*37,2,37,1))
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([4]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([10.0])) 
-ParamsDict["tag"] = "Hysteresis_InitCon_1" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-ParamsDict["Init_Cons"] = numpy.zeros((37*37,2,37,1))
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([4]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([10.0])) 
-ParamsDict["tag"] = "Hysteresis_InitCon_0" + str(ParamsDict["G"]) 
-Simul_Pipeline(ParamsDict=ParamsDict)
+        ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                            a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                            tau_i=numpy.array([65.0])) 
+        ParamsDict["tag"] = "LCycleCut_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
+        Simul_Pipeline(ParamsDict=ParamsDict)
 
 """
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
