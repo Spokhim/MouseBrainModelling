@@ -87,6 +87,8 @@ ParamsDict["tag"] = ""
 
 ################################################################################################################################
 
+ParamsDict["G"] = np.array([0.75]) 
+
 for i in np.arange(10):
     # Set random states
     ParamsDict["RandState"] = i * 12 + 1
