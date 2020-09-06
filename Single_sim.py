@@ -88,17 +88,18 @@ ParamsDict["tag"] = ""
 ################################################################################################################################
 
 ParamsDict["G"] = np.array([0.75]) 
+ParamsDict["ExportSim"] = False
 
 for i in np.arange(10):
     # Set random states
     ParamsDict["RandState"] = i * 12 + 1
 
-    ParamsDict["Simul_length"] = 1.2e4
-    ParamsDict["tag"] = "LCycCut_Short" + str(i) 
+    ParamsDict["Simul_length"] = 1.2e6
+    ParamsDict["tag"] = "LCycCut_6" + str(i) 
     Simul_Pipeline(ParamsDict=ParamsDict)
 
-    ParamsDict["Simul_length"] = 1.2e5
-    ParamsDict["tag"] = "LCycCut_Long" + str(i) 
+    ParamsDict["Simul_length"] = 5e5
+    ParamsDict["tag"] = "LCycCut_5_5" + str(i) 
     Simul_Pipeline(ParamsDict=ParamsDict)
 
 
