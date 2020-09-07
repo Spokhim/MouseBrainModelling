@@ -91,6 +91,8 @@ ParamsDict["tag"] = ""
 i = int(sys.argv[1])
 
 ParamsDict["G"] = np.array([i*0.05]) 
+ParamsDict["ExportSim"] = False
+ParamsDict["Simul_length"] = 1.2e6
 
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
