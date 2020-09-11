@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\Pok Him\\envs\\tvb\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\Pok Him\\envs\\tvb_3_8\\Scripts\\python.exe",
+    "python.dataScience.jupyterServerURI": "local"
 }
