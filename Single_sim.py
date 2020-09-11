@@ -90,18 +90,12 @@ ParamsDict["tag"] = ""
 ParamsDict["G"] = np.array([0.75]) 
 ParamsDict["ExportSim"] = False
 
-for i in np.arange(10):
-    # Set random states
-    ParamsDict["RandState"] = i * 12 + 1
+# Set random states
+# ParamsDict["RandState"] = i * 12 + 1
 
-    ParamsDict["Simul_length"] = 1.2e6
-    ParamsDict["tag"] = "LCycCut_6" + str(i) 
-    Simul_Pipeline(ParamsDict=ParamsDict)
-
-    ParamsDict["Simul_length"] = 5e5
-    ParamsDict["tag"] = "LCycCut_5_5" + str(i) 
-    Simul_Pipeline(ParamsDict=ParamsDict)
-
+ParamsDict["Simul_length"] = 1.2e3
+ParamsDict["tag"] = "LCycCut_Test" 
+Simul_Pipeline(ParamsDict=ParamsDict)
 
 """
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
