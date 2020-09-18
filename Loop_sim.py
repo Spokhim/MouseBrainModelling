@@ -92,51 +92,20 @@ i = int(sys.argv[1])
 
 ParamsDict["G"] = np.array([i*0.05]) 
 ParamsDict["ExportSim"] = False
-ParamsDict["Simul_length"] = 1.2e6
 
-df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
-E_pop = df.excitatory.values
-I_pop = df.inhibitory.values
-E_mean = np.mean(E_pop)
-I_mean = np.mean(I_pop)
+# We are now sweeping Homogeneous models across G and b_e. 
 
-# E_normalised is (when excluding region 7) -0.28 to 0.54
-E_normalised = (E_pop-E_mean)/E_mean
-# I_normalised is (when excluding region 7) -0.45 to 1.44
-I_normalised = (I_pop-I_mean)/I_mean
+# First do For Limit Cycle regime: 
 
-# Set Wilson Cowan Model Parameters - LCycleCut
-ParamsDict["MODEL_c_ee"] = np.array([11.0])
-ParamsDict["MODEL_c_ei"] = np.array([10.0])
-ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([1.0])
+for j in np.arange(16):
+    b_e = np.array([j])*0.2
 
-# Homogeneous Coupling constants
-h_ee = ParamsDict["MODEL_c_ee"] 
-h_ei = ParamsDict["MODEL_c_ei"] 
-h_ie = ParamsDict["MODEL_c_ie"] 
-h_ii = ParamsDict["MODEL_c_ii"] 
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=b_e,b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([65.0])) 
 
-for J in np.arange(6):
-    # Round is to get reid of the weird float thing that happens to make 0.6 0.6000000001
-    ParamsDict["sig_e"] = J*0.2
-    ParamsDict["sig_e"].round(decimals=1)
-
-    for K in np.arange(6):
-        ParamsDict["sig_i"] = K*0.2
-        ParamsDict["sig_i"].round(decimals=1)
-
-        # Heterogeneous Coupling Constants (array)
-        ParamsDict["MODEL_c_ie"] = h_ie  * (1 + ParamsDict["sig_e"] * E_normalised) 
-        ParamsDict["MODEL_c_ee"] = h_ee  * (1 + ParamsDict["sig_e"] * E_normalised) 
-        ParamsDict["MODEL_c_ii"] = h_ii  * (1 + ParamsDict["sig_i"] * I_normalised) 
-        ParamsDict["MODEL_c_ei"] = h_ei  * (1 + ParamsDict["sig_i"] * I_normalised) 
-
-        ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                            a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                            tau_i=numpy.array([65.0])) 
-        ParamsDict["tag"] = "LCycleCut_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
-        Simul_Pipeline(ParamsDict=ParamsDict)
+    ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) + "_b_e" + str(b_e) 
+    Simul_Pipeline(ParamsDict=ParamsDict)
 
 """
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
