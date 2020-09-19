@@ -95,16 +95,28 @@ ParamsDict["ExportSim"] = False
 
 # We are now sweeping Homogeneous models across G and b_e. 
 
-# First do For Limit Cycle regime: 
+# Fixed - pt 
 
 for j in np.arange(16):
     b_e = np.array([j])*0.2
 
     ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=b_e,b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                        tau_i=numpy.array([65.0])) 
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([2]),b_i=numpy.array([4]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([10.0])) 
 
-    ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) + "_b_e" + str(b_e) 
+    ParamsDict["tag"] = "FixedPt_G" + str(ParamsDict["G"]) + "_b_e" + str(b_e) 
+    Simul_Pipeline(ParamsDict=ParamsDict)
+
+# Hysteresis
+
+for j in np.arange(21):
+    b_e = np.array([j])*0.1
+
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([4]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([10.0])) 
+                                        
+    ParamsDict["tag"] = "Hysteresis_G" + str(ParamsDict["G"]) + "_b_e" + str(b_e) 
     Simul_Pipeline(ParamsDict=ParamsDict)
 
 """
