@@ -66,7 +66,7 @@ ParamsDict["dt"] = 0.1
 ParamsDict["noise"] = np.array([0.000013])
 
 # Set Initial Conditions.  Comment out if you want TVB to make initial conditions for you.  Init_Cons CANT be in the Dict in this case.  
-ParamsDict["Init_Cons"] = initial_conditions=0.25 + numpy.zeros((37*37,2,37,1))
+#ParamsDict["Init_Cons"] = initial_conditions=0.25 + numpy.zeros((37*37,2,37,1))
 # Must be of form:
 # initial_conditions=0.5 + numpy.zeros((con.number_of_regions*con.number_of_regions,2,con.number_of_regions,1))
 
@@ -94,25 +94,7 @@ i = int(sys.argv[1])
 ParamsDict["G"] = np.array([i*0.05]) 
 
 # We are now sweeping Homogeneous models across G and b_e. 
-# We are re-doing the sweep with set initial conditions. 
-
-# Fixed - pt 
-
-# Set Wilson Cowan Model Parameters - Fixed pt
-ParamsDict["MODEL_c_ee"] = np.array([12.0])
-ParamsDict["MODEL_c_ei"] = np.array([15.0])
-ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([8.0])
-
-for j in np.arange(31):
-    b_e = np.array([j])*0.1 + 2
-
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=b_e,b_i=numpy.array([4]),tau_e=numpy.array([10.0]),
-                                        tau_i=numpy.array([10.0])) 
-
-    ParamsDict["tag"] = "FixedPt_G" + str(ParamsDict["G"]) + "_b_e" + str(b_e) 
-    Simul_Pipeline(ParamsDict=ParamsDict)
+# Try Hysteresis with random Initial Conditions.  
 
 # Hysteresis
 
