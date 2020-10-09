@@ -93,33 +93,58 @@ i = int(sys.argv[1])
 
 ParamsDict["G"] = np.array([i*0.05]) 
 
-# We are now sweeping Homogeneous models across G and b_e. 
-# Try Hysteresis with random Initial Conditions.  
+# 2nd order - for Jump Regime (Which is Fake Het)
+# 1.2 e5 simulation length for now. 
 
-# Hysteresis
+# Obtain Het Data
+df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
+E_pop = df.excitatory.values
+I_pop = df.inhibitory.values
+E_mean = np.mean(E_pop)
+I_mean = np.mean(I_pop)
 
-# Set Wilson Cowan Model Parameters - Hysteresis
-ParamsDict["MODEL_c_ee"] = np.array([16.0])
-ParamsDict["MODEL_c_ei"] = np.array([12.0])
+# E_normalised is (when excluding region 7) -0.28 to 0.54
+E_normalised = (E_pop-E_mean)/E_mean
+# I_normalised is (when excluding region 7) -0.45 to 1.44
+I_normalised = (I_pop-I_mean)/I_mean
+
+# Set Wilson Cowan Model Parameters - Jump regime uses LCycle weight params but with Hysteresis for the other ones. (Excpet for b_e = 3.1)
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([3.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
+# Homogeneous Coupling constants
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
 
-for j in np.arange(21):
-    b_e = np.array([j])*0.1 + 3
+b_e = 3.1
 
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=b_e,b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+for J in np.arange(6):
+    # Round is to get reid of the weird float thing that happens to make 0.6 0.6000000001
+    ParamsDict["sig_e"] = J*0.2
+    ParamsDict["sig_e"].round(decimals=1)
+
+    for K in np.arange(6):
+        ParamsDict["sig_i"] = K*0.2
+        ParamsDict["sig_i"].round(decimals=1)
+
+        # Heterogeneous Coupling Constants (array)
+        ParamsDict["MODEL_c_ie"] = h_ie  * (1 + ParamsDict["sig_e"] * E_normalised) 
+        ParamsDict["MODEL_c_ee"] = h_ee  * (1 + ParamsDict["sig_e"] * E_normalised) 
+        ParamsDict["MODEL_c_ii"] = h_ii  * (1 + ParamsDict["sig_i"] * I_normalised) 
+        ParamsDict["MODEL_c_ei"] = h_ei  * (1 + ParamsDict["sig_i"] * I_normalised) 
+
+        ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([b_e]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([10.0])) 
+        ParamsDict["tag"] = "Jump_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
+        Simul_Pipeline(ParamsDict=ParamsDict)
 
-    ParamsDict["tag"] = "Hysteresis_G" + str(ParamsDict["G"]) + "_b_e" + str(b_e) 
-    Simul_Pipeline(ParamsDict=ParamsDict)
 
 """
-# i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
-i = int(sys.argv[1])
-
-ParamsDict["G"] = np.array([i*0.05]) 
-
+# Obtain Het Data
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
