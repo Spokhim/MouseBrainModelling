@@ -93,7 +93,7 @@ i = int(sys.argv[1])
 
 ParamsDict["G"] = np.array([i*0.05]) 
 
-# 2nd order - for Jump Regime (Which is Fake Het)
+# 2nd order - for LCycleCut but optimal one
 # 1.2 e5 simulation length for now. 
 
 # Obtain Het Data
@@ -119,7 +119,7 @@ h_ei = ParamsDict["MODEL_c_ei"]
 h_ie = ParamsDict["MODEL_c_ie"] 
 h_ii = ParamsDict["MODEL_c_ii"] 
 
-b_e = 3.1
+b_e = 0.8
 
 for J in np.arange(6):
     # Round is to get reid of the weird float thing that happens to make 0.6 0.6000000001
@@ -137,9 +137,9 @@ for J in np.arange(6):
         ParamsDict["MODEL_c_ei"] = h_ei  * (1 + ParamsDict["sig_i"] * I_normalised) 
 
         ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([b_e]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
-                                        tau_i=numpy.array([10.0])) 
-        ParamsDict["tag"] = "Jump_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([b_e]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([65.0])) 
+        ParamsDict["tag"] = "LCycleCut_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
         Simul_Pipeline(ParamsDict=ParamsDict)
 
 
