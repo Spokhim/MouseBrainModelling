@@ -87,14 +87,42 @@ ParamsDict["tag"] = ""
 
 ################################################################################################################################
 
-ParamsDict["G"] = np.array([0.75]) 
-ParamsDict["ExportSim"] = False
-
 # Set random states
 # ParamsDict["RandState"] = i * 12 + 1
 
-ParamsDict["Simul_length"] = 1.2e3
-ParamsDict["tag"] = "LCycCut_Test" 
+df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
+E_pop = df.excitatory.values
+I_pop = df.inhibitory.values
+E_mean = np.mean(E_pop)
+I_mean = np.mean(I_pop)
+
+# E_normalised is (when excluding region 7) -0.28 to 0.54
+E_normalised = (E_pop-E_mean)/E_mean
+# I_normalised is (when excluding region 7) -0.45 to 1.44
+I_normalised = (I_pop-I_mean)/I_mean
+
+ParamsDict["G"] = np.array([0.75]) 
+sig_e = 0.0
+sig_i = 0.4
+ParamsDict["Simul_length"] = 1.2e6
+ParamsDict["tag"] = "LCycleCut_Het" 
+
+# Homogeneous Coupling constants
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
+
+# Heterogeneous Coupling Constants (array)
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sig_e * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sig_e * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sig_i * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sig_i * I_normalised) 
+
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+
 Simul_Pipeline(ParamsDict=ParamsDict)
 
 """
