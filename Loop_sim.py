@@ -93,13 +93,16 @@ i = int(sys.argv[1])
 
 ParamsDict["G"] = np.array([i*0.05]) 
 
-# 2nd order - for LCycleCut but optimal one
+# 2nd order - for LCycleCut but optimal one 
 # 1.2 e5 simulation length for now. 
+# WANT TO TRY A DIFFERENT HET GRADIENT. 
 
 # Obtain Het Data
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
+
+'''
 E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
 
@@ -107,6 +110,21 @@ I_mean = np.mean(I_pop)
 E_normalised = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
 I_normalised = (I_pop-I_mean)/I_mean
+'''
+
+E_prop = E_pop / (E_pop + I_pop)
+I_prop = I_pop / (E_pop + I_pop)
+
+Mean_e_prop = np.mean(E_prop)
+Mean_i_prop = np.mean(I_prop)
+
+# -0.1 to 0.08 roughly. 
+E_prop_norm = (E_prop-Mean_e_prop)/Mean_e_prop
+# -0.4 to 0.7
+I_prop_norm = (I_prop-Mean_i_prop)/Mean_i_prop
+
+E_normalised = E_prop_norm
+I_normalised = I_prop_norm 
 
 # Set Wilson Cowan Model Parameters - Jump regime uses LCycle weight params but with Hysteresis for the other ones. (Excpet for b_e = 3.1)
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
@@ -122,14 +140,11 @@ h_ii = ParamsDict["MODEL_c_ii"]
 b_e = 0.8
 
 for J in np.arange(6):
-    # Round is to get reid of the weird float thing that happens to make 0.6 0.6000000001
     ParamsDict["sig_e"] = J*0.2
-    ParamsDict["sig_e"].round(decimals=1)
-
+    
     for K in np.arange(6):
         ParamsDict["sig_i"] = K*0.2
-        ParamsDict["sig_i"].round(decimals=1)
-
+        
         # Heterogeneous Coupling Constants (array)
         ParamsDict["MODEL_c_ie"] = h_ie  * (1 + ParamsDict["sig_e"] * E_normalised) 
         ParamsDict["MODEL_c_ee"] = h_ee  * (1 + ParamsDict["sig_e"] * E_normalised) 
