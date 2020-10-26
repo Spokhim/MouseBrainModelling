@@ -137,10 +137,9 @@ h_ei = ParamsDict["MODEL_c_ei"]
 h_ie = ParamsDict["MODEL_c_ie"] 
 h_ii = ParamsDict["MODEL_c_ii"] 
 
-b_e = 0.8
-
+b_e = 1.5
 for J in np.arange(6):
-    ParamsDict["sig_e"] = J*0.2
+    ParamsDict["sig_e"] = J
     
     for K in np.arange(6):
         ParamsDict["sig_i"] = K*0.2
@@ -154,8 +153,27 @@ for J in np.arange(6):
         ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                         a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([b_e]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([65.0])) 
-        ParamsDict["tag"] = "LCycleCut_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
+        ParamsDict["tag"] = "LCycleCutOld_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
         Simul_Pipeline(ParamsDict=ParamsDict)
+
+for J in np.arange(6):
+    ParamsDict["sig_e"] = J
+    
+    for K in np.arange(6):
+        ParamsDict["sig_i"] = K*0.2
+        
+        # Heterogeneous Coupling Constants (array)
+        ParamsDict["MODEL_c_ie"] = h_ie  * (1 + ParamsDict["sig_e"] * E_normalised) 
+        ParamsDict["MODEL_c_ee"] = h_ee  * (1 + ParamsDict["sig_e"] * E_normalised) 
+        ParamsDict["MODEL_c_ii"] = h_ii  * (1 + ParamsDict["sig_i"] * I_normalised) 
+        ParamsDict["MODEL_c_ei"] = h_ei  * (1 + ParamsDict["sig_i"] * I_normalised) 
+
+        ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                            a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([4]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+                                            tau_i=numpy.array([10.0])) 
+        ParamsDict["tag"] = "Jump_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
+        Simul_Pipeline(ParamsDict=ParamsDict)
+
 
 
 """
