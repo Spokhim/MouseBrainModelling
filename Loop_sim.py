@@ -156,6 +156,8 @@ for J in np.arange(6):
         ParamsDict["tag"] = "LCycleCutOld_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
         Simul_Pipeline(ParamsDict=ParamsDict)
 
+# Jump Regime
+b_e = 3.1
 for J in np.arange(6):
     ParamsDict["sig_e"] = J
     
@@ -169,7 +171,7 @@ for J in np.arange(6):
         ParamsDict["MODEL_c_ei"] = h_ei  * (1 + ParamsDict["sig_i"] * I_normalised) 
 
         ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                            a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([4]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+                                            a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([b_e]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
                                             tau_i=numpy.array([10.0])) 
         ParamsDict["tag"] = "Jump_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
         Simul_Pipeline(ParamsDict=ParamsDict)
