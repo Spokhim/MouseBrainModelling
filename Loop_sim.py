@@ -95,14 +95,13 @@ ParamsDict["G"] = np.array([i*0.05])
 
 # 2nd order - for LCycleCut but optimal one 
 # 1.2 e5 simulation length for now. 
-# WANT TO TRY A DIFFERENT HET GRADIENT. 
 
 # Obtain Het Data
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
 
-'''
+# Gradient - Version 1
 E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
 
@@ -110,8 +109,9 @@ I_mean = np.mean(I_pop)
 E_normalised = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
 I_normalised = (I_pop-I_mean)/I_mean
-'''
 
+'''
+# Gradient - Version 2 
 E_prop = E_pop / (E_pop + I_pop)
 I_prop = I_pop / (E_pop + I_pop)
 
@@ -125,6 +125,7 @@ I_prop_norm = (I_prop-Mean_i_prop)/Mean_i_prop
 
 E_normalised = E_prop_norm
 I_normalised = I_prop_norm 
+'''
 
 # Set Wilson Cowan Model Parameters - Jump regime uses LCycle weight params but with Hysteresis for the other ones. (Excpet for b_e = 3.1)
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
@@ -139,7 +140,7 @@ h_ii = ParamsDict["MODEL_c_ii"]
 
 b_e = 1.5
 for J in np.arange(6):
-    ParamsDict["sig_e"] = J
+    ParamsDict["sig_e"] = J*0.2
     
     for K in np.arange(6):
         ParamsDict["sig_i"] = K*0.2
@@ -155,28 +156,6 @@ for J in np.arange(6):
                                         tau_i=numpy.array([65.0])) 
         ParamsDict["tag"] = "LCycleCutOld_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
         Simul_Pipeline(ParamsDict=ParamsDict)
-
-# Jump Regime
-b_e = 3.1
-for J in np.arange(6):
-    ParamsDict["sig_e"] = J
-    
-    for K in np.arange(6):
-        ParamsDict["sig_i"] = K*0.2
-        
-        # Heterogeneous Coupling Constants (array)
-        ParamsDict["MODEL_c_ie"] = h_ie  * (1 + ParamsDict["sig_e"] * E_normalised) 
-        ParamsDict["MODEL_c_ee"] = h_ee  * (1 + ParamsDict["sig_e"] * E_normalised) 
-        ParamsDict["MODEL_c_ii"] = h_ii  * (1 + ParamsDict["sig_i"] * I_normalised) 
-        ParamsDict["MODEL_c_ei"] = h_ei  * (1 + ParamsDict["sig_i"] * I_normalised) 
-
-        ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                            a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=numpy.array([b_e]),b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
-                                            tau_i=numpy.array([10.0])) 
-        ParamsDict["tag"] = "Jump_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
-        Simul_Pipeline(ParamsDict=ParamsDict)
-
-
 
 """
 # Obtain Het Data
