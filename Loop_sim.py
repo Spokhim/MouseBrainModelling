@@ -101,6 +101,7 @@ df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
 
+'''
 # Gradient - Version 1
 E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
@@ -125,7 +126,6 @@ I_prop_norm = (I_prop-Mean_i_prop)/Mean_i_prop
 
 E_normalised = E_prop_norm
 I_normalised = I_prop_norm 
-'''
 
 # Set Wilson Cowan Model Parameters - Jump regime uses LCycle weight params but with Hysteresis for the other ones. (Excpet for b_e = 3.1)
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
@@ -138,21 +138,23 @@ h_ei = ParamsDict["MODEL_c_ei"]
 h_ie = ParamsDict["MODEL_c_ie"] 
 h_ii = ParamsDict["MODEL_c_ii"] 
 
+# Adjusting a_e and a_i - Deco treats a_e = a_i, but let's not. He also has a bias term adjustmnet but we ignore that. 
+# He also has a tuning of some paraemeter which keeps oscilaltion frequency at 3Hz, we don't do that. 
+
 b_e = 1.5
 for J in np.arange(6):
-    ParamsDict["sig_e"] = J*0.2
+    ParamsDict["sig_e"] = J
     
     for K in np.arange(6):
         ParamsDict["sig_i"] = K*0.2
         
-        # Heterogeneous Coupling Constants (array)
-        ParamsDict["MODEL_c_ie"] = h_ie  * (1 + ParamsDict["sig_e"] * E_normalised) 
-        ParamsDict["MODEL_c_ee"] = h_ee  * (1 + ParamsDict["sig_e"] * E_normalised) 
-        ParamsDict["MODEL_c_ii"] = h_ii  * (1 + ParamsDict["sig_i"] * I_normalised) 
-        ParamsDict["MODEL_c_ei"] = h_ei  * (1 + ParamsDict["sig_i"] * I_normalised) 
+        # Heterogeneous Sigmoid Gain/Slope
+        ParamsDict["MODEL_a_e"] = np.array([1.0]) * (1 + ParamsDict["sig_e"] * E_normalised) 
+        ParamsDict["MODEL_a_i"] = np.array([1.0]) * (1 + ParamsDict["sig_i"] * I_normalised) 
+
 
         ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([b_e]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        a_e=ParamsDict["MODEL_a_e"],a_i=ParamsDict["MODEL_a_i"],b_e=numpy.array([b_e]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([65.0])) 
         ParamsDict["tag"] = "LCycleCutOld_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
         Simul_Pipeline(ParamsDict=ParamsDict)
