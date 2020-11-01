@@ -91,7 +91,7 @@ i = int(sys.argv[1])
 
 # FCFC Shuffle
 ParamsDict["ExportSim"] = False 
-# Try 1.2e5 and hope it runs within a week
+# Skimp on computation time and power by reducing to 1.2e4.  Should be fine. 
 ParamsDict["Simul_length"] = 1.2e5
 
 # First we must shuffle it randomly. 
@@ -130,43 +130,37 @@ Best_G = 0
 Best_Sigma = 0  
 
 # Sweep across the range of Sigma values:
+for I in np.arange(6):
 
-for H in np.arange(6):
-    ParamsDict["sig_e"] = H *0.2
-    sig_e = ParamsDict["sig_e"]
+    ParamsDict["Sigma"] =I*0.2
+    sigma = ParamsDict["Sigma"] 
 
-    for I in np.arange(6):
+    # Heterogeneous Coupling Constants (array)
+    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
 
-        ParamsDict["sig_i"] =I*0.2
-        sig_i = ParamsDict["sig_i"] 
+    
+    # Sweep across the range of G values
+    for J in np.arange(31):
+        ParamsDict["G"] = np.array([J * 0.05])
 
-        # Heterogeneous Coupling Constants (array)
-        ParamsDict["MODEL_c_ie"] = h_ie * (1 + sig_e * E_normalised) 
-        ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sig_e * E_normalised) 
-        ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sig_i * I_normalised) 
-        ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sig_i * I_normalised) 
+        ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                            a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                            tau_i=numpy.array([65.0])) 
+        Score = Simul_Pipeline(ParamsDict=ParamsDict)[2]
 
-        
-        # Sweep across the range of G values
-        for J in np.arange(41):
-            ParamsDict["G"] = np.array([J * 0.05])
-
-            ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                                a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                                tau_i=numpy.array([65.0])) 
-            Score = Simul_Pipeline(ParamsDict=ParamsDict)[2]
-
-            # If the score is the best score, store it. 
-            if Score > Best_Score:
-                Best_Score = Score
-                Best_G = ParamsDict["G"]
-                Best_sig_e = ParamsDict["sig_e"] 
-                Best_sig_i = ParamsDict["sig_i"] 
-                print(Best_Score)  
-                print(Best_G)   
-                print(Best_Sigma)         
+        # If the score is the best score, store it. 
+        if Score > Best_Score:
+            Best_Score = Score
+            Best_G = ParamsDict["G"]
+            Best_Sigma = ParamsDict["Sigma"] 
+            print(Best_Score)  
+            print(Best_G)   
+            print(Best_Sigma)         
 
 # Now export the information:
 time_now = time.strftime("%Y%m%d-%H%M%S")
-np.savetxt("do-not-track/2ndOLCHetVal" + str(i) + "_" + ParamsDict["name"] + "_Best_" + time_now + "_.csv", [Best_Score,Best_G,Best_sig_e,Best_sig_i], delimiter="\t")
-np.savetxt("do-not-track/2ndOLCHetVal" + str(i) + "_" + ParamsDict["name"] + "_EIHet_" + time_now + "_.csv", [E_normalised,I_normalised], delimiter="\t")
+np.savetxt("do-not-track/LCHetVal_Better/" + str(i) + "_" + ParamsDict["name"] + "_Best_" + time_now + "_.csv", [Best_Score,Best_G,Best_Sigma], delimiter="\t")
+np.savetxt("do-not-track/LCHetVal_Better/" + str(i) + "_" + ParamsDict["name"] + "_EIHet_" + time_now + "_.csv", [E_normalised,I_normalised], delimiter="\t")
