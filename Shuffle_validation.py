@@ -143,8 +143,8 @@ for I in np.arange(6):
 
     
     # Sweep across the range of G values
-    for J in np.arange(31):
-        ParamsDict["G"] = np.array([J * 0.05])
+    for J in np.arange(29):
+        ParamsDict["G"] = np.array([J * 0.05]) + 0.10
 
         ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                             a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
