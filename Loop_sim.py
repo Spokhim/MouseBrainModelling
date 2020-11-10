@@ -93,15 +93,12 @@ i = int(sys.argv[1])
 
 ParamsDict["G"] = np.array([i*0.05]) 
 
-# 2nd order - for LCycleCut but optimal one 
-# 1.2 e5 simulation length for now. 
-
 # Obtain Het Data
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
 
-'''
+
 # Gradient - Version 1
 E_mean = np.mean(E_pop)
 I_mean = np.mean(I_pop)
@@ -126,38 +123,29 @@ I_prop_norm = (I_prop-Mean_i_prop)/Mean_i_prop
 
 E_normalised = E_prop_norm
 I_normalised = I_prop_norm 
+'''
 
-# Set Wilson Cowan Model Parameters - Jump regime uses LCycle weight params but with Hysteresis for the other ones. (Excpet for b_e = 3.1)
+# Set Wilson Cowan Model Parameters - Hysteresis with Lcycle coupling parameters
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
 ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([1.0])
-# Homogeneous Coupling constants
-h_ee = ParamsDict["MODEL_c_ee"] 
-h_ei = ParamsDict["MODEL_c_ei"] 
-h_ie = ParamsDict["MODEL_c_ie"] 
-h_ii = ParamsDict["MODEL_c_ii"] 
 
-# Adjusting a_e and a_i - Deco treats a_e = a_i, but let's not. He also has a bias term adjustmnet but we ignore that. 
-# He also has a tuning of some paraemeter which keeps oscilaltion frequency at 3Hz, we don't do that. 
+# The hysteresis parts:
+ParamsDict["MODEL_a_e"] = np.array([1.3]) 
+ParamsDict["MODEL_a_i"] = np.array([2.0]) 
+ParamsDict["MODEL_b_i"] = np.array([5.5]) 
 
-b_e = 1.5
-for J in np.arange(6):
-    ParamsDict["sig_e"] = J
+# Want to do b_e and G sweep: so just b_e here
+
+for J in np.arange(16):
+    ParamsDict["b_e"] = np.array(J*0.2)
     
-    for K in np.arange(6):
-        ParamsDict["sig_i"] = K*0.2
-        
-        # Heterogeneous Sigmoid Gain/Slope
-        ParamsDict["MODEL_a_e"] = np.array([1.0]) * (1 + ParamsDict["sig_e"] * E_normalised) 
-        ParamsDict["MODEL_a_i"] = np.array([1.0]) * (1 + ParamsDict["sig_i"] * I_normalised) 
-
-
-        ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=ParamsDict["MODEL_a_e"],a_i=ParamsDict["MODEL_a_i"],b_e=numpy.array([b_e]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                        tau_i=numpy.array([65.0])) 
-        ParamsDict["tag"] = "LCycleCutOld_G" + str(ParamsDict["G"]) + "sig_e" + str(ParamsDict["sig_e"]) +"sig_i" + str(ParamsDict["sig_i"]) 
-        Simul_Pipeline(ParamsDict=ParamsDict)
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=ParamsDict["MODEL_a_e"],a_i=ParamsDict["MODEL_a_i"],b_e=ParamsDict["b_e"],b_i=ParamsDict["MODEL_b_i"],tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([10.0])) 
+    ParamsDict["tag"] = "L_Hysteresis_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["b_e"]) 
+    Simul_Pipeline(ParamsDict=ParamsDict)
 
 """
 # Obtain Het Data
