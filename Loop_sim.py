@@ -138,8 +138,8 @@ ParamsDict["MODEL_b_i"] = np.array([5.5])
 
 # Want to do b_e and G sweep: so just b_e here
 
-for J in np.arange(16):
-    ParamsDict["b_e"] = np.array(J*0.2)
+for J in np.arange(11):
+    ParamsDict["b_e"] = np.array(3 + J*0.2)
     
     ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                     a_e=ParamsDict["MODEL_a_e"],a_i=ParamsDict["MODEL_a_i"],b_e=ParamsDict["b_e"],b_i=ParamsDict["MODEL_b_i"],tau_e=numpy.array([10.0]),
