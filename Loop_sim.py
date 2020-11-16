@@ -91,13 +91,15 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 i = int(sys.argv[1])
 
-ParamsDict["G"] = np.array([i*0.05]) 
+#ParamsDict["G"] = np.array([i*0.05]) 
+
+# This is for 41 Random State runs. 
+ParamsDict["RandState"] = i * 12 + 1
 
 # Obtain Het Data
 df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
 E_pop = df.excitatory.values
 I_pop = df.inhibitory.values
-
 
 # Gradient - Version 1
 E_mean = np.mean(E_pop)
@@ -107,6 +109,225 @@ I_mean = np.mean(I_pop)
 E_normalised = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
 I_normalised = (I_pop-I_mean)/I_mean
+
+# First do for SImulation Length 1.2e4 
+ParamsDict["Simul_length"] = 1.2e4
+
+# Fixed Pt
+ParamsDict["MODEL_c_ee"] = np.array([12.0])
+ParamsDict["MODEL_c_ei"] = np.array([15.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([8.0])
+ParamsDict["B_e"] = np.array([3.3])
+ParamsDict["G"] = np.array([0.65]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([4]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([10.0])) 
+ParamsDict["tag"] = "FixedPt_i" + str(i) + "Length_e4"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# Hysteresis
+ParamsDict["MODEL_c_ee"] = np.array([16.0])
+ParamsDict["MODEL_c_ei"] = np.array([12.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([3.0])
+ParamsDict["B_e"] = np.array([3.7])
+ParamsDict["G"] = np.array([0.35]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([10.0])) 
+ParamsDict["tag"] = "Hysteresis_i" + str(i) + "Length_e4"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycleReg2
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
+ParamsDict["B_e"] = np.array([2.8])
+ParamsDict["G"] = np.array([0.45]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "LCycleReg2_i" + str(i) + "Length_e4"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycle-RHopf = LCycleCut
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
+ParamsDict["B_e"] = np.array([0.8])
+ParamsDict["G"] = np.array([0.5]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "LCycleCut_i" + str(i) + "Length_e4"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycle_Het
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
+sigma=0.2
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+ParamsDict["B_e"] = np.array([1.5])
+ParamsDict["G"] = np.array([0.75]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "Het_LCycleCut_i" + str(i) + "Length_e4"
+
+############################################################################################
+# And again for Simulation Length 1.2e5
+ParamsDict["Simul_length"] = 1.2e5
+
+# Fixed Pt
+ParamsDict["MODEL_c_ee"] = np.array([12.0])
+ParamsDict["MODEL_c_ei"] = np.array([15.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([8.0])
+ParamsDict["B_e"] = np.array([3.3])
+ParamsDict["G"] = np.array([0.65]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([4]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([10.0])) 
+ParamsDict["tag"] = "FixedPt_i" + str(i) + "Length_e5"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# Hysteresis
+ParamsDict["MODEL_c_ee"] = np.array([16.0])
+ParamsDict["MODEL_c_ei"] = np.array([12.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([3.0])
+ParamsDict["B_e"] = np.array([3.7])
+ParamsDict["G"] = np.array([0.35]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([10.0])) 
+ParamsDict["tag"] = "Hysteresis_i" + str(i) + "Length_e5"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycleReg2
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
+ParamsDict["B_e"] = np.array([2.8])
+ParamsDict["G"] = np.array([0.45]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "LCycleReg2_i" + str(i) + "Length_e5"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycle-RHopf = LCycleCut
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
+ParamsDict["B_e"] = np.array([0.8])
+ParamsDict["G"] = np.array([0.5]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "LCycleCut_i" + str(i) + "Length_e5"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycle_Het
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
+sigma=0.2
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+ParamsDict["B_e"] = np.array([1.5])
+ParamsDict["G"] = np.array([0.75]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "Het_LCycleCut_i" + str(i) + "Length_e5"
+
+########################################################################
+
+# And finally again for Simulation Length 1.2e6
+ParamsDict["Simul_length"] = 1.2e6
+
+# Fixed Pt
+ParamsDict["MODEL_c_ee"] = np.array([12.0])
+ParamsDict["MODEL_c_ei"] = np.array([15.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([8.0])
+ParamsDict["B_e"] = np.array([3.3])
+ParamsDict["G"] = np.array([0.65]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([4]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([10.0])) 
+ParamsDict["tag"] = "FixedPt_i" + str(i) + "Length_e6"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# Hysteresis
+ParamsDict["MODEL_c_ee"] = np.array([16.0])
+ParamsDict["MODEL_c_ei"] = np.array([12.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([3.0])
+ParamsDict["B_e"] = np.array([3.7])
+ParamsDict["G"] = np.array([0.35]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([10.0])) 
+ParamsDict["tag"] = "Hysteresis_i" + str(i) + "Length_e6"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycleReg2
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
+ParamsDict["B_e"] = np.array([2.8])
+ParamsDict["G"] = np.array([0.45]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "LCycleReg2_i" + str(i) + "Length_e6"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycle-RHopf = LCycleCut
+ParamsDict["MODEL_c_ee"] = np.array([11.0])
+ParamsDict["MODEL_c_ei"] = np.array([10.0])
+ParamsDict["MODEL_c_ie"] = np.array([10.0])
+ParamsDict["MODEL_c_ii"] = np.array([1.0])
+ParamsDict["B_e"] = np.array([0.8])
+ParamsDict["G"] = np.array([0.5]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "LCycleCut_i" + str(i) + "Length_e6"
+Simul_Pipeline(ParamsDict=ParamsDict)
+
+# LCycle_Het
+h_ee = ParamsDict["MODEL_c_ee"] 
+h_ei = ParamsDict["MODEL_c_ei"] 
+h_ie = ParamsDict["MODEL_c_ie"] 
+h_ii = ParamsDict["MODEL_c_ii"] 
+sigma=0.2
+ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma * E_normalised) 
+ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma * I_normalised) 
+ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma * I_normalised) 
+ParamsDict["B_e"] = np.array([1.5])
+ParamsDict["G"] = np.array([0.75]) 
+ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                    tau_i=numpy.array([65.0])) 
+ParamsDict["tag"] = "Het_LCycleCut_i" + str(i) + "Length_e6"
 
 '''
 # Gradient - Version 2 
@@ -124,28 +345,6 @@ I_prop_norm = (I_prop-Mean_i_prop)/Mean_i_prop
 E_normalised = E_prop_norm
 I_normalised = I_prop_norm 
 '''
-
-# Set Wilson Cowan Model Parameters - Hysteresis with Lcycle coupling parameters
-ParamsDict["MODEL_c_ee"] = np.array([11.0])
-ParamsDict["MODEL_c_ei"] = np.array([10.0])
-ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([1.0])
-
-# The hysteresis parts:
-ParamsDict["MODEL_a_e"] = np.array([1.3]) 
-ParamsDict["MODEL_a_i"] = np.array([2.0]) 
-ParamsDict["MODEL_b_i"] = np.array([5.5]) 
-
-# Want to do b_e and G sweep: so just b_e here
-
-for J in np.arange(11):
-    ParamsDict["b_e"] = np.array(3 + J*0.2)
-    
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=ParamsDict["MODEL_a_e"],a_i=ParamsDict["MODEL_a_i"],b_e=ParamsDict["b_e"],b_i=ParamsDict["MODEL_b_i"],tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([10.0])) 
-    ParamsDict["tag"] = "L_Hysteresis_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["b_e"]) 
-    Simul_Pipeline(ParamsDict=ParamsDict)
 
 """
 # Obtain Het Data
