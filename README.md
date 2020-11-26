@@ -1,4 +1,4 @@
-# Heterogeneous Mouse Brain Modelling Honours Project
+# Mouse Brain Modelling Honours Project
 
 Utilising the simulator of the Virtual Brain.
 
