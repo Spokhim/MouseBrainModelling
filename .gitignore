@@ -3,3 +3,4 @@ do-not-track
 __pycache__
 .vscode
 tvb
+.vscode/settings.json
