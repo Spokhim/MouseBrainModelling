@@ -131,7 +131,7 @@ Best_G = 0
 Best_Sigma = 0  
 
 # Do not sweep G 
-ParamsDict["G"] = 0.7
+ParamsDict["G"] = np.array([0.7])
 
 # Sweep across the range of Sigma values:
 for I in np.arange(6):
