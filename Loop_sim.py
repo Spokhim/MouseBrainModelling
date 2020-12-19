@@ -95,7 +95,7 @@ ParamsDict["G"] = np.array([i*0.05])
 # Simulate everything Homogeneous Sweeps for Simulation Length 1.2e6
 ParamsDict["Simul_length"] = 1.2e6
 ParamsDict["Snip"] = 100 # Gets multiplied by 100 so this is 1 e4 (or 1%)
-
+'''
 # B_e goes from 2->5
 for b_e in np.arange(start=2,stop=5,step=0.1): 
 
@@ -110,7 +110,7 @@ for b_e in np.arange(start=2,stop=5,step=0.1):
                                         tau_i=numpy.array([10.0])) 
     ParamsDict["tag"] = "FixedPt_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
-
+'''
 #B_e : 3- >5
 for b_e in np.arange(start=3,stop=5,step=0.1): 
 
