@@ -110,7 +110,7 @@ for b_e in np.arange(start=2,stop=5,step=0.1):
                                         tau_i=numpy.array([10.0])) 
     ParamsDict["tag"] = "FixedPt_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
-'''
+
 #B_e : 3- >5
 for b_e in np.arange(start=3,stop=5,step=0.1): 
 
@@ -125,6 +125,7 @@ for b_e in np.arange(start=3,stop=5,step=0.1):
                                             tau_i=numpy.array([10.0])) 
     ParamsDict["tag"] = "Hysteresis_G"+ str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
+    '''
 
 # B_e: 0 -> 3
 for b_e in np.arange(start=0,stop=3,step=0.1): 
