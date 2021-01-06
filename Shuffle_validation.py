@@ -139,31 +139,31 @@ for I in np.arange(6):
     ParamsDict["Sigma_e"] =I*0.2
     sigma_e = ParamsDict["Sigma_e"] 
 
-    for J in np.arange(6):
-        ParamsDict["Sigma_i"] = J*0.2
-        sigma_i = ParamsDict["Sigma_i"] 
-        
-        # Heterogeneous Coupling Constants (array)
-        ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma_e * E_normalised) 
-        ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma_e * E_normalised) 
-        ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma_i * I_normalised) 
-        ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma_i * I_normalised) 
+    #for J in np.arange(6):
+    ParamsDict["Sigma_i"] = I*0.2
+    sigma_i = ParamsDict["Sigma_i"] 
+    
+    # Heterogeneous Coupling Constants (array)
+    ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma_e * E_normalised) 
+    ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma_e * E_normalised) 
+    ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma_i * I_normalised) 
+    ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma_i * I_normalised) 
 
-        ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                            a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                            tau_i=numpy.array([65.0])) 
-        Score = Simul_Pipeline(ParamsDict=ParamsDict)[2]
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=numpy.array([1.5]),b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([65.0])) 
+    Score = Simul_Pipeline(ParamsDict=ParamsDict)[2]
 
-        # If the score is the best score, store it. 
-        if Score > Best_Score:
-            Best_Score = Score
-            Best_G = ParamsDict["G"]
-            Best_Sigma_e = ParamsDict["Sigma_e"] 
-            Best_Sigma_i = ParamsDict["Sigma_i"] 
-            print(Best_Score)  
-            print(Best_G)   
-            print(Best_Sigma_e)  
-            print(Best_Sigma_i)         
+    # If the score is the best score, store it. 
+    if Score > Best_Score:
+        Best_Score = Score
+        Best_G = ParamsDict["G"]
+        Best_Sigma_e = ParamsDict["Sigma_e"] 
+        Best_Sigma_i = ParamsDict["Sigma_i"] 
+        print(Best_Score)  
+        print(Best_G)   
+        print(Best_Sigma_e)  
+        print(Best_Sigma_i)         
 
 date = time.strftime("%Y_%m_%d/")
 # Create new directory which is the date. 
