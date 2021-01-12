@@ -93,7 +93,7 @@ i = int(sys.argv[1])
 # Nah don't save it. 
 ParamsDict["ExportSim"] = False
 # Skimp on computation time and power by reducing to 1.2e5.  
-ParamsDict["Simul_length"] = 1.2e5
+ParamsDict["Simul_length"] = 1.2e6
 
 # First we must shuffle it randomly. 
 # Let's Pause by X seconds to make sure the random stuff is working and different across the parallel cpus (based on  sys time after all)
