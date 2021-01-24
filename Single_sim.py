@@ -101,31 +101,34 @@ E_normalised = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
 I_normalised = (I_pop-I_mean)/I_mean
 
+'''
 # Simulate everything Homogeneous Sweeps for Simulation Length 1.2e6
 ParamsDict["Simul_length"] = 1.2e6
 ParamsDict["Snip"] = 100 # Gets multiplied by 100 so this is 1 e4 (or 1%)
+'''
 
-# Simulate LCycle Het Best 1.2e6
+# Simulate LCycle Het 1.2 e5 no G sweep and finer sigma. 
 # LCycle
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
 ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([1.0])
-ParamsDict["B_e"] = np.array([0.8]) 
-ParamsDict["G"] = np.array([0.55]) 
+ParamsDict["B_e"] = np.array([1.5]) 
+ParamsDict["G"] = np.array([0.7]) 
 # Homogeneous Coupling constants
 h_ee = ParamsDict["MODEL_c_ee"] 
 h_ei = ParamsDict["MODEL_c_ei"] 
 h_ie = ParamsDict["MODEL_c_ie"] 
 h_ii = ParamsDict["MODEL_c_ii"] 
 
-for I in np.arange(6):
+for I in np.arange(11):
 
-    ParamsDict["Sigma_e"] =I*0.2
+    ParamsDict["Sigma_e"] =I*0.1
     sigma_e = ParamsDict["Sigma_e"] 
+    
+    for J in np.arange(11):
 
-    for J in np.arange(6):
-        ParamsDict["Sigma_i"] = J*0.2
+        ParamsDict["Sigma_i"] = J*0.1
         sigma_i = ParamsDict["Sigma_i"] 
 
                 # Heterogeneous Coupling Constants (array)
