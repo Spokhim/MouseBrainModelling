@@ -91,11 +91,25 @@ ParamsDict["tag"] = ""
 # i is PBS_ARRAY_INDEX - Allows for creation of multiple jobs 
 i = int(sys.argv[1])
 ParamsDict["G"] = np.array([i*0.05]) 
+ParamsDict["BOLD"] = True
 
-# Simulate everything Homogeneous Sweeps for Simulation Length 1.2e6
-ParamsDict["Simul_length"] = 1.2e6
-ParamsDict["Snip"] = 100 # Gets multiplied by 100 so this is 1 e4 (or 1%)
-'''
+ParamsDict["Simul_length"] = 1.2e5
+#ParamsDict["Snip"] = 100 # Gets multiplied by 100 so this is 1 e4 (or 1%)
+
+# B_e: 0 -> 3
+for b_e in np.arange(start=0,stop=3,step=0.1): 
+    # LCycle
+    ParamsDict["MODEL_c_ee"] = np.array([11.0])
+    ParamsDict["MODEL_c_ei"] = np.array([10.0])
+    ParamsDict["MODEL_c_ie"] = np.array([10.0])
+    ParamsDict["MODEL_c_ii"] = np.array([1.0])
+    ParamsDict["B_e"] = np.array([b_e]) 
+    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
+                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
+                                        tau_i=numpy.array([65.0])) 
+    ParamsDict["tag"] = "LCycle_BOLD_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
+    Simul_Pipeline(ParamsDict=ParamsDict)
+
 # B_e goes from 2->5
 for b_e in np.arange(start=2,stop=5,step=0.1): 
 
@@ -108,7 +122,7 @@ for b_e in np.arange(start=2,stop=5,step=0.1):
     ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                         a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([4]),tau_e=numpy.array([10.0]),
                                         tau_i=numpy.array([10.0])) 
-    ParamsDict["tag"] = "FixedPt_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
+    ParamsDict["tag"] = "FixedPt_BOLD_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
 
 #B_e : 3- >5
@@ -123,23 +137,9 @@ for b_e in np.arange(start=3,stop=5,step=0.1):
     ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                             a_e=numpy.array([1.3]),a_i=numpy.array([2.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([3.7]),tau_e=numpy.array([10.0]),
                                             tau_i=numpy.array([10.0])) 
-    ParamsDict["tag"] = "Hysteresis_G"+ str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
+    ParamsDict["tag"] = "Hysteresis_BOLD_G"+ str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
     Simul_Pipeline(ParamsDict=ParamsDict)
-    '''
 
-# B_e: 0 -> 3
-for b_e in np.arange(start=0,stop=3,step=0.1): 
-    # LCycle
-    ParamsDict["MODEL_c_ee"] = np.array([11.0])
-    ParamsDict["MODEL_c_ei"] = np.array([10.0])
-    ParamsDict["MODEL_c_ie"] = np.array([10.0])
-    ParamsDict["MODEL_c_ii"] = np.array([1.0])
-    ParamsDict["B_e"] = np.array([b_e]) 
-    ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                        a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                        tau_i=numpy.array([65.0])) 
-    ParamsDict["tag"] = "LCycle_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) 
-    Simul_Pipeline(ParamsDict=ParamsDict)
 
 '''
 # LCycle-RHopf = LCycleCut
