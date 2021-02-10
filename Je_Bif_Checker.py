@@ -30,8 +30,8 @@ from useful_fns import *
 #matplotlib.rcParams['figure.figsize'] = (10.0, 5.0)
 
 # Get all the file names. 
-#TseriesFile = glob.glob(r"do-not-track\\2020_12_26\\LCycle*Tseries*.csv") 
-TseriesFile = glob.glob(r"D:\\Simulations\\2020_09_23\\LCycle*Tseries*.csv") 
+TseriesFile = glob.glob(r"do-not-track\\2020_12_26\\LCycle*Tseries*.csv") 
+#TseriesFile = glob.glob(r"D:\\Simulations\\2020_09_23\\LCycle*Tseries*.csv") 
 
 # Import SCM, don't worry about re-ordering. Needed to Calculate J_e
 
