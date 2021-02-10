@@ -110,7 +110,7 @@ df["TheMedian"] = TheMedian
 df = df.drop_duplicates(['G','B_e'],keep='first')
 
 # Export the df
-df.to_csv('do-not-track\J_e_LCycle.csv',index=True)
+df.to_csv('do-not-track/J_e_LCycle.csv',index=True)
 
 
 #df_pivot_min = df.pivot(index='B_e', columns='G', values='TheMin')
