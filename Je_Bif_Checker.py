@@ -68,6 +68,9 @@ for string in TseriesFile:
     #x = re.findall("\[(.*)\].b_e(...)",string)
     Params.append(x[0])
 
+    # Get G_value 
+    G_value = float(x[0][0])
+
     # Want to get the J_e ranges
 
     # Import the Tseries from the file. 
