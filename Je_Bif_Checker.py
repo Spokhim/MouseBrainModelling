@@ -30,7 +30,8 @@ from useful_fns import *
 #matplotlib.rcParams['figure.figsize'] = (10.0, 5.0)
 
 # Get all the file names. 
-TseriesFile = glob.glob(r"do-not-track\\2020_12_26\\LCycle*Tseries*.csv") 
+#TseriesFile = glob.glob(r"do-not-track\\2020_12_26\\LCycle*Tseries*.csv") 
+TseriesFile = glob.glob(r"D:\\Simulations\\2020_09_23\\LCycle*Tseries*.csv") 
 
 # Import SCM, don't worry about re-ordering. Needed to Calculate J_e
 
@@ -59,13 +60,14 @@ Params = []
 TheMin = []
 TheMax = []
 TheMedian = [] 
+TheMean = []
+#J_e_all = [] # Don't bother with J_e_all as is 3D
 
 # Now for Each TseriesFile
 for string in TseriesFile:
 
     # Obtain Parameter Values
     x = re.findall("\[(.*)\].*\[(.*)\]",string)
-    #x = re.findall("\[(.*)\].b_e(...)",string)
     Params.append(x[0])
 
     # Get G_value 
@@ -74,19 +76,18 @@ for string in TseriesFile:
     # Want to get the J_e ranges
 
     # Import the Tseries from the file. 
-    df = np.genfromtxt(TseriesFile,delimiter="\t")
+    df = np.genfromtxt(string,delimiter="\t")
 
     bold_time = df[0]
     bold_data = df[1:]
-
 
     # Calculate J_e
     # External Current Calculator:
     J_e = []
     # j is jth element
 
-    # Make it faster by only checking the first 1/50 as this is 1.2e6 time. 
-    for j in np.arange(len(bold_time)/50):       
+    # Make it faster by only checking the first 1e4.
+    for j in np.arange(10000):               
         t_0 = []
         # Specific column (or time point)
         for i in np.arange(SCM.shape[0]): 
@@ -98,23 +99,27 @@ for string in TseriesFile:
 
     J_e = np.array(J_e)
 
-    # Get the Min, Max, Median
+    # Get the Min, Max, Median, Mean
     TheMin.append(J_e.min())
     TheMax.append(J_e.max())
-    TheMedian.append(J_e.median())
+    TheMedian.append(np.median(J_e))
+    TheMean.append(np.mean(J_e))
+
+    #J_e_all.append(J_e)
 
 df = pd.DataFrame(Params)
 df.columns = ['G', 'B_e']
 df["TheMin"] = TheMin
 df["TheMax"] = TheMax
 df["TheMedian"] = TheMedian
+df["TheMean"] = TheMean
 
 # Drop any duplicates if necessary. 
 df = df.drop_duplicates(['G','B_e'],keep='first')
 
 # Export the df
-df.to_csv('do-not-track/J_e_LCycle.csv',index=True)
-
+df.to_csv('do-not-track/J_e_LCycle_stats.csv',index=False)
+#np.savetxt('do-not-track/J_e_LCycle_all.csv', J_e_all, delimiter="\t")
 
 #df_pivot_min = df.pivot(index='B_e', columns='G', values='TheMin')
 #df_pivot_max = df.pivot(index='B_e', columns='G', values='TheMax')
