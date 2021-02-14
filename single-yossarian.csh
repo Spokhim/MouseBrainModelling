@@ -3,7 +3,7 @@
 #!/bin/csh
 #PBS -N single-yossarian
 #PBS -q yossarian
-#PBS -l select=1:ncpus=1:mem=4GB
+#PBS -l select=1:ncpus=1:mem=100GB
 # Minimum acceptable walltime: day-hours:mins:secs
 #PBS -l walltime=48:00:00
 # Send e-mail if job ends or aborts
