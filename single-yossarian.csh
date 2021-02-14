@@ -20,6 +20,5 @@ source ~/TVB/bin/activate.csh
 
 # Working directory is where I ran qsub
 cd "$PBS_O_WORKDIR"
-#python Single_sim.py 
-python Je_Bif_Checker.py
-exit
+python Je_Bif_Checker.py 
+exit 
