@@ -106,105 +106,16 @@ E_normalised = (E_pop-E_mean)/E_mean
 # I_normalised is (when excluding region 7) -0.45 to 1.44
 I_normalised = (I_pop-I_mean)/I_mean
 
-
-# Gradient - Version 2 
-E_prop = E_pop / (E_pop + I_pop)
-I_prop = I_pop / (E_pop + I_pop)
-
-Mean_e_prop = np.mean(E_prop)
-Mean_i_prop = np.mean(I_prop)
-
-# -0.1 to 0.08 roughly. 
-E_prop_norm = (E_prop-Mean_e_prop)/Mean_e_prop
-# -0.4 to 0.7
-I_prop_norm = (I_prop-Mean_i_prop)/Mean_i_prop
-
-E_normalised = E_prop_norm
-I_normalised = I_prop_norm 
-
+# With Best LCycle 1.2e5 B_e = 1.1
+# G = 0.6
 # Simulate LCycle Het 1.2 e5 no G sweep and finer sigma. 
 # LCycle
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
 ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([1.0])
-ParamsDict["B_e"] = np.array([1.5]) 
-ParamsDict["G"] = np.array([0.75]) 
-# Homogeneous Coupling constants
-h_ee = ParamsDict["MODEL_c_ee"] 
-h_ei = ParamsDict["MODEL_c_ei"] 
-h_ie = ParamsDict["MODEL_c_ie"] 
-h_ii = ParamsDict["MODEL_c_ii"] 
-
-# Simualte V2 het (so using proportions.)
-
-ParamsDict["Sigma_e"] =I*0.1*5
-sigma_e = ParamsDict["Sigma_e"] 
-
-ParamsDict["Sigma_i"] = I*0.1
-sigma_i = ParamsDict["Sigma_i"] 
-
-        # Heterogeneous Coupling Constants (array)
-ParamsDict["MODEL_c_ie"] = h_ie * (1 + sigma_e * E_normalised) 
-ParamsDict["MODEL_c_ee"] = h_ee  * (1 + sigma_e * E_normalised) 
-ParamsDict["MODEL_c_ii"] = h_ii  * (1 + sigma_i * I_normalised) 
-ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma_i * I_normalised) 
-        
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycle_HetV2_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) + "_sig_e" + str(sigma_e) + "_sig_i" + str(sigma_i)
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-# Simualte V3 het (so using proportions and adjusting a_e, a_i)
-ParamsDict["MODEL_c_ee"] = np.array([11.0])
-ParamsDict["MODEL_c_ei"] = np.array([10.0])
-ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([1.0])
-
-ParamsDict["Sigma_e"] =I*0.1*5
-sigma_e = ParamsDict["Sigma_e"] 
-
-ParamsDict["Sigma_i"] = I*0.1
-sigma_i = ParamsDict["Sigma_i"] 
-
-        # Heterogeneous Coupling Constants (array)
-ParamsDict["MODEL_a_e"] = numpy.array([1.0]) * (1 + sigma_e * E_normalised) 
-ParamsDict["MODEL_a_i"] = numpy.array([1.0])  * (1 + sigma_i * I_normalised) 
-        
-ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
-                                    a_e=ParamsDict["MODEL_a_e"],a_i=ParamsDict["MODEL_a_i"],b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
-                                    tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycle_HetV3_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) + "_sig_e" + str(sigma_e) + "_sig_i" + str(sigma_i)
-Simul_Pipeline(ParamsDict=ParamsDict)
-
-# Finally try Het when I remove Nodes 26,19,3 (of the original order)
-
-ParamsDict["REMOVE"] = [26,19,7,3]
-
-df = pd.read_csv("CortexDensitiesAlter.csv",delimiter=",")
-E_pop = df.excitatory.values
-I_pop = df.inhibitory.values
-
-E_pop = np.delete(E_pop,[26,19,3])
-I_pop = np.delete(I_pop,[26,19,3])
-E_mean = np.mean(E_pop)
-I_mean = np.mean(I_pop)
-
-# E_normalised is (when excluding region 7,26,19,3) -0.27 -> 0.41
-E_normalised = (E_pop-E_mean)/E_mean
-# I_normalised is (when excluding region 7,26,19,3) -0.4 -> 0.63
-I_normalised = (I_pop-I_mean)/I_mean
-
-# With Alt LCycle B_e = 1.5
-# Simulate LCycle Het 1.2 e5 no G sweep and finer sigma. 
-# LCycle
-ParamsDict["MODEL_c_ee"] = np.array([11.0])
-ParamsDict["MODEL_c_ei"] = np.array([10.0])
-ParamsDict["MODEL_c_ie"] = np.array([10.0])
-ParamsDict["MODEL_c_ii"] = np.array([1.0])
-ParamsDict["B_e"] = np.array([1.5]) 
-ParamsDict["G"] = np.array([0.75]) 
+ParamsDict["B_e"] = np.array([1.1]) 
+ParamsDict["G"] = np.array([0.6]) 
 # Homogeneous Coupling constants
 h_ee = ParamsDict["MODEL_c_ee"] 
 h_ei = ParamsDict["MODEL_c_ei"] 
@@ -226,18 +137,18 @@ ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma_i * I_normalised)
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                     a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                     tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycleAlt_Het_Removed_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) + "_sig_e" + str(sigma_e) + "_sig_i" + str(sigma_i)
+ParamsDict["tag"] = "LCycle_" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) + "_sig_e" + str(sigma_e) + "_sig_i" + str(sigma_i)
 Simul_Pipeline(ParamsDict=ParamsDict)
 
-# With Best LCycle B_e = 0.8
+# G = 0.65
 # Simulate LCycle Het 1.2 e5 no G sweep and finer sigma. 
 # LCycle
 ParamsDict["MODEL_c_ee"] = np.array([11.0])
 ParamsDict["MODEL_c_ei"] = np.array([10.0])
 ParamsDict["MODEL_c_ie"] = np.array([10.0])
 ParamsDict["MODEL_c_ii"] = np.array([1.0])
-ParamsDict["B_e"] = np.array([0.8]) 
-ParamsDict["G"] = np.array([0.5]) 
+ParamsDict["B_e"] = np.array([1.1]) 
+ParamsDict["G"] = np.array([0.65]) 
 # Homogeneous Coupling constants
 h_ee = ParamsDict["MODEL_c_ee"] 
 h_ei = ParamsDict["MODEL_c_ei"] 
@@ -259,7 +170,7 @@ ParamsDict["MODEL_c_ei"] = h_ei  * (1 + sigma_i * I_normalised)
 ParamsDict["MODEL"] = models.WilsonCowan(c_ee=ParamsDict["MODEL_c_ee"],c_ei=ParamsDict["MODEL_c_ei"],c_ie=ParamsDict["MODEL_c_ie"] ,c_ii=ParamsDict["MODEL_c_ii"],
                                     a_e=numpy.array([1.0]),a_i=numpy.array([1.0]),b_e=ParamsDict["B_e"],b_i=numpy.array([2.8]),tau_e=numpy.array([10.0]),
                                     tau_i=numpy.array([65.0])) 
-ParamsDict["tag"] = "LCycleB_Het_Removed_G" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) + "_sig_e" + str(sigma_e) + "_sig_i" + str(sigma_i)
+ParamsDict["tag"] = "LCycle_" + str(ParamsDict["G"]) + "_b_e" + str(ParamsDict["B_e"]) + "_sig_e" + str(sigma_e) + "_sig_i" + str(sigma_i)
 Simul_Pipeline(ParamsDict=ParamsDict)
 
 '''
