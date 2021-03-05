@@ -67,9 +67,10 @@ print(Value)
 
 # https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
 # Transparency
-alpha = 0.15
+alpha = 0.8
 print(len(E_normalised))
 
+'''
 # For just normal colouring of brain regions. 
 # Create a scene_e
 scene_e = Scene(
@@ -82,10 +83,29 @@ for i in np.arange(len(E_normalised)):
     scene_e.add_brain_regions([acronym], alpha=0.5,use_original_color=True,wireframe=True)
 
 scene_e.render()
-
 '''
+
 Peace=colorMap(E_normalised, name=ListedColormap(turbo_colormap_data),vmin=min(E_normalised),vmax=max(E_normalised))
 
+'''
+# Create Colourbars
+# create dummy invisible image
+# (use the colormap you want to have on the colorbar)
+img = plt.imshow(np.array([[min(E_normalised),max(E_normalised)]]), cmap=ListedColormap(turbo_colormap_data))
+img.set_visible(False)
+
+plt.colorbar(orientation="vertical")
+plt.savefig("colorbar_e.pdf")
+
+# create dummy invisible image
+# (use the colormap you want to have on the colorbar)
+img = plt.imshow(np.array([[min(I_normalised),max(I_normalised)]]), cmap=ListedColormap(turbo_colormap_data))
+img.set_visible(False)
+
+plt.colorbar(orientation="vertical")
+plt.savefig("colorbar_i.pdf")
+
+'''
 # Create a scene_e
 scene_e = Scene(
     #screenshot_kwargs=dict(folder="Docs/Media/clean_screenshots"),
@@ -106,7 +126,6 @@ scene_i = Scene(
 )
 
 # Transparency
-alpha = 0.15
 print(len(I_normalised))
 Inhib = colorMap(I_normalised, name=ListedColormap(turbo_colormap_data),vmin=min(I_normalised),vmax=max(I_normalised))
 
@@ -115,8 +134,9 @@ for i in np.arange(len(I_normalised)):
     acronym = df.acronym[i]
     scene_i.add_brain_regions([acronym], alpha=alpha,color=colour_value)
 
-
 scene_i.render()
+
+'''
 
 # Create a scene
 scene = Scene(
