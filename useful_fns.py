@@ -134,3 +134,13 @@ def current_calculator(V,G,SCM):
     # This returns as a tuple!  Oooh! (not a list)
     return J_med,J_min,J_max
 
+# Print Blocking (to make the figure outputs less confusing)
+# https://stackoverflow.com/questions/8391411/how-to-block-calls-to-print
+
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+# Restore
+def enablePrint():
+    sys.stdout = sys.__stdout__
