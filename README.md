@@ -1,4 +1,4 @@
-# Mouse Brain Modelling Honours Project
+# Understanding Heterogeneous Dynamics of the Mouse Cortex
 
 Utilising the simulator of the Virtual Brain.
 
@@ -10,6 +10,9 @@ Uses Python 3.
 
 Simulation is performed by the .csh and .py files.
 Analysis is done by the .ipynb. 
+
+For reproducibility purposes, we created "Reproducibility.ipynb" which generates all the figures shown in the paper before editing with imaging software.  
+The markdown version of the Jupyter notebook is below.
 
 ```python
 from useful_fns import *
