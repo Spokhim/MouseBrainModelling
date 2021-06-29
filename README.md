@@ -47,7 +47,7 @@ Show_SCM()
 ```
 
 
-![svg](output_files/output_2_0.svg)
+![png](output_files/output_2_0.png)
 
 
 
@@ -56,7 +56,7 @@ Show_FCM()
 ```
 
 
-![svg](output_files/output_3_0.svg)
+![png](output_files/output_3_0.png)
 
 
 
@@ -65,15 +65,15 @@ Het_Sample_Figures_Fig1()
 ```
 
 
-![svg](output_files/output_4_0.svg)
+![png](output_files/output_4_0.png)
 
 
 
-![svg](output_files/output_4_1.svg)
+![png](output_files/output_4_1.png)
 
 
 
-![svg](output_files/output_4_2.svg)
+![png](output_files/output_4_2.png)
 
 
 ## Figure 2
@@ -87,7 +87,7 @@ Homog_sweep(r"do-not-track\\2020_09_23\\LCycle*Scorr*.csv")
 ```
 
 
-![svg](output_files/output_6_0.svg)
+![png](output_files/output_6_0.png)
 
 
 
@@ -96,7 +96,7 @@ Homog_sweep(r"do-not-track\\2020_10_05\\FixedPt*Scorr*.csv")
 ```
 
 
-![svg](output_files/output_7_0.svg)
+![png](output_files/output_7_0.png)
 
 
 
@@ -105,7 +105,7 @@ Homog_sweep(r"do-not-track\\2020_10_06\\Hysteresis*Scorr*.csv")
 ```
 
 
-![svg](output_files/output_8_0.svg)
+![png](output_files/output_8_0.png)
 
 
 
@@ -114,15 +114,15 @@ Bif_Diagram_Generation()
 ```
 
 
-![svg](output_files/output_9_0.svg)
+![png](output_files/output_9_0.png)
 
 
 
-![svg](output_files/output_9_1.svg)
+![png](output_files/output_9_1.png)
 
 
 
-![svg](output_files/output_9_2.svg)
+![png](output_files/output_9_2.png)
 
 
 ## Figure 3 
@@ -150,19 +150,19 @@ Single_Run_Plots(File_start,Regime,G_value,B_e_value)
 ```
 
 
-![svg](output_files/output_11_0.svg)
+![png](output_files/output_11_0.png)
 
 
 
-![svg](output_files/output_11_1.svg)
+![png](output_files/output_11_1.png)
 
 
 
-![svg](output_files/output_11_2.svg)
+![png](output_files/output_11_2.png)
 
 
 
-![svg](output_files/output_11_3.svg)
+![png](output_files/output_11_3.png)
 
 
 
@@ -179,19 +179,19 @@ Single_Run_Plots(File_start,Regime,G_value,B_e_value)
 ```
 
 
-![svg](output_files/output_12_0.svg)
+![png](output_files/output_12_0.png)
 
 
 
-![svg](output_files/output_12_1.svg)
+![png](output_files/output_12_1.png)
 
 
 
-![svg](output_files/output_12_2.svg)
+![png](output_files/output_12_2.png)
 
 
 
-![svg](output_files/output_12_3.svg)
+![png](output_files/output_12_3.png)
 
 
 
@@ -208,19 +208,19 @@ Single_Run_Plots(File_start,Regime,G_value,B_e_value)
 ```
 
 
-![svg](output_files/output_13_0.svg)
+![png](output_files/output_13_0.png)
 
 
 
-![svg](output_files/output_13_1.svg)
+![png](output_files/output_13_1.png)
 
 
 
-![svg](output_files/output_13_2.svg)
+![png](output_files/output_13_2.png)
 
 
 
-![svg](output_files/output_13_3.svg)
+![png](output_files/output_13_3.png)
 
 
 ## Figure 5
@@ -236,19 +236,19 @@ LCycle_Het_Bif_Diagrams(6,0.1)
 ```
 
 
-![svg](output_files/output_15_0.svg)
+![png](output_files/output_15_0.png)
 
 
 
-![svg](output_files/output_15_1.svg)
+![png](output_files/output_15_1.png)
 
 
 
-![svg](output_files/output_15_2.svg)
+![png](output_files/output_15_2.png)
 
 
 
-![svg](output_files/output_15_3.svg)
+![png](output_files/output_15_3.png)
 
 
 ## Figure 6
@@ -270,19 +270,19 @@ Single_Run_Het_Plots(File_start,Regime,G_value,B_e_value,sig_e,sig_i)
 ```
 
 
-![svg](output_files/output_17_0.svg)
+![png](output_files/output_17_0.png)
 
 
 
-![svg](output_files/output_17_1.svg)
+![png](output_files/output_17_1.png)
 
 
 
-![svg](output_files/output_17_2.svg)
+![png](output_files/output_17_2.png)
 
 
 
-![svg](output_files/output_17_3.svg)
+![png](output_files/output_17_3.png)
 
 
 
@@ -291,7 +291,7 @@ Show_Sig_sweep()
 ```
 
 
-![svg](output_files/output_18_0.svg)
+![png](output_files/output_18_0.png)
 
 
 ## Figure 7
@@ -306,7 +306,7 @@ ShuffleValidations()
 ```
 
 
-![svg](output_files/output_20_0.svg)
+![png](output_files/output_20_0.png)
 
 
 
@@ -315,7 +315,7 @@ BenchmarkingVsLitereature()
 ```
 
 
-![svg](output_files/output_21_0.svg)
+![png](output_files/output_21_0.png)
 
 
 ## Supplementary Figures
@@ -339,19 +339,19 @@ Single_Run_Plots(File_start,Regime,G_value,B_e_value)
 ```
 
 
-![svg](output_files/output_23_0.svg)
+![png](output_files/output_23_0.png)
 
 
 
-![svg](output_files/output_23_1.svg)
+![png](output_files/output_23_1.png)
 
 
 
-![svg](output_files/output_23_2.svg)
+![png](output_files/output_23_2.png)
 
 
 
-![svg](output_files/output_23_3.svg)
+![png](output_files/output_23_3.png)
 
 
 
@@ -366,7 +366,7 @@ Single_Run_Plots(File_start,Regime,G_value,B_e_value)
 ```
 
 
-![svg](output_files/output_24_0.svg)
+![png](output_files/output_24_0.png)
 
 
     WARNING  File 'average_orientations' not found in ZIP.
@@ -379,18 +379,18 @@ Single_Run_Plots(File_start,Regime,G_value,B_e_value)
     
 
 
-![svg](output_files/output_24_2.svg)
+![png](output_files/output_24_2.png)
 
 
     [5.42201530e-001 1.16755535e-102 5.07998490e-001 5.55818089e-045]
     
 
 
-![svg](output_files/output_24_4.svg)
+![png](output_files/output_24_4.png)
 
 
 
-![svg](output_files/output_24_5.svg)
+![png](output_files/output_24_5.png)
 
 
 
@@ -399,19 +399,19 @@ LCycle_Het_Bif_Diagrams(6,0.5)
 ```
 
 
-![svg](output_files/output_25_0.svg)
+![png](output_files/output_25_0.png)
 
 
 
-![svg](output_files/output_25_1.svg)
+![png](output_files/output_25_1.png)
 
 
 
-![svg](output_files/output_25_2.svg)
+![png](output_files/output_25_2.png)
 
 
 
-![svg](output_files/output_25_3.svg)
+![png](output_files/output_25_3.png)
 
 
 
@@ -420,19 +420,19 @@ Hysteresis_Het_Bif_Diagrams(6,0.5)
 ```
 
 
-![svg](output_files/output_26_0.svg)
+![png](output_files/output_26_0.png)
 
 
 
-![svg](output_files/output_26_1.svg)
+![png](output_files/output_26_1.png)
 
 
 
-![svg](output_files/output_26_2.svg)
+![png](output_files/output_26_2.png)
 
 
 
-![svg](output_files/output_26_3.svg)
+![png](output_files/output_26_3.png)
 
 
 
@@ -441,7 +441,7 @@ J_e_Border_Check()
 ```
 
 
-![svg](output_files/output_27_0.svg)
+![png](output_files/output_27_0.png)
 
 
 
